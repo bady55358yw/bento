@@ -8,6 +8,7 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
+import { ConfigProvider } from "antd";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
@@ -23,9 +24,16 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
+const theme = {
+  token: {
+    colorPrimary: '#1677FF',
+    
+  },
+};
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="zh-tw">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -33,7 +41,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <ConfigProvider
+          theme={theme}
+        >
+          {children}
+        </ConfigProvider>
+
         <ScrollRestoration />
         <Scripts />
       </body>
