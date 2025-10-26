@@ -9,6 +9,7 @@ import {
 
 import type { Route } from "./+types/root";
 import { ConfigProvider } from "antd";
+import "@ant-design/v5-patch-for-react-19";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
@@ -26,8 +27,7 @@ export const links: Route.LinksFunction = () => [
 
 const theme = {
   token: {
-    colorPrimary: '#1677FF',
-    
+    colorPrimary: "#1677FF",
   },
 };
 
@@ -43,6 +43,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <ConfigProvider
           theme={theme}
+          button={{
+            autoInsertSpace: false,
+          }}
         >
           {children}
         </ConfigProvider>
