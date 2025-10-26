@@ -11,5 +11,6 @@ export default [
   layout("./layouts/BaseLayout.tsx", [
     route("login", "./routes/auth/login.tsx"),
     route("stores", "./routes/stores/index.tsx"),
+    route("stores/step-1", "./routes/stores/new/step1.tsx"),
   ]),
 ] satisfies RouteConfig;
