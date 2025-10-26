@@ -12,5 +12,7 @@ export default [
     route("login", "./routes/auth/login.tsx"),
     route("stores", "./routes/stores/index.tsx"),
     route("stores/step-1", "./routes/stores/new/step1.tsx"),
+    route("stores/step-2", "./routes/stores/new/step2.tsx"),
+    route("stores/step-3", "./routes/stores/new/step3.tsx"),
   ]),
 ] satisfies RouteConfig;
