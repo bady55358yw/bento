@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button, Input, Form } from "antd";
 const { TextArea } = Input;
+import { useStoreForm } from "@/store/useStoreForm";
 
 const step1Schema = z.object({
   storeName: z.string().min(1, "請輸入店名"),
@@ -18,6 +19,7 @@ type Step1Inputs = z.infer<typeof step1Schema>;
 
 function step1() {
   let navigate = useNavigate();
+  const { step1Data, setStep1 } = useStoreForm()
 
   const {
     handleSubmit,
@@ -25,10 +27,12 @@ function step1() {
     formState: { errors },
   } = useForm<Step1Inputs>({
     resolver: zodResolver(step1Schema),
-    defaultValues: { storeName: "", phoneNumber: "", address: "" },
+    defaultValues: step1Data, // 使用 store 的 step1Data 初始值
   });
 
+
   const submitForm = (data: Step1Inputs) => {
+    setStep1(data) // 儲存 step1 資料到 store
     navigate("/stores/step-2");
   };
 

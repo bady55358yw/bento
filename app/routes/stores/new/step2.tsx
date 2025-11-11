@@ -1,9 +1,10 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Checkbox, Form, Input } from "antd";
-import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
+import { Button, Checkbox, Form, Input } from "antd";
 const { TextArea } = Input;
+import { useStoreForm } from "@/store/useStoreForm";
 
 const step2Schema = z
   .object({
@@ -28,6 +29,7 @@ type Step2Inputs = z.infer<typeof step2Schema>;
 
 function step2() {
   let navigate = useNavigate();
+  const { step2Data, setStep2 } = useStoreForm();
 
   const {
     control,
@@ -35,14 +37,11 @@ function step2() {
     formState: { errors },
   } = useForm<Step2Inputs>({
     resolver: zodResolver(step2Schema),
-    defaultValues: {
-      storeDescription: "",
-      hasDeliveryService: false,
-      deliveryFee: "0",
-    },
+    defaultValues: step2Data, // 使用 store 的 step2Data 初始值
   });
 
   const submitForm = (data: Step2Inputs) => {
+    setStep2(data); // 儲存 step2 資料到 store
     navigate("/stores/step-3");
   };
 
