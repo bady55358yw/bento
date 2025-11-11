@@ -3,6 +3,8 @@
 @theme {
   --color-colorPrimary: #1677ff;
 
+  --color-colorError: #ff4d4f;
+
   --color-colorText: rgba(0, 0, 0, 0.88);
   --color-colorTextSecondary: rgba(0, 0, 0, 0.65);
   --color-colorTextTertiary: rgba(0, 0, 0, 0.45);
