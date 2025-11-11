@@ -1,10 +1,8 @@
-import { useNavigate } from "react-router";
-import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Checkbox, Form, Input } from "antd";
+import { Controller, useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import * as z from "zod";
-import { Button, Input, Checkbox, Form } from "antd";
-import ErrorMsg from "@components/ErrorMsg";
-import { useEffect } from "react";
 const { TextArea } = Input;
 
 const step2Schema = z
@@ -68,38 +66,40 @@ function step2() {
             />
           </Form.Item>
 
-          <div className="flex items-center text-colorTextSecondary">
-            <Controller
-              name="hasDeliveryService"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <Checkbox
-                  checked={field.value}
-                  onChange={(e) => field.onChange(e.target.checked)}
-                  className="checkbox-lg !text-colorTextSecondary !text-base"
-                >
-                  提供外送服務，外送低消：
-                </Checkbox>
-              )}
-            />
+          <Form.Item
+            validateStatus={errors.deliveryFee ? "error" : ""}
+            help={errors.deliveryFee?.message}
+          >
+            <div className="flex items-center text-colorTextSecondary">
+              <Controller
+                name="hasDeliveryService"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Checkbox
+                    checked={field.value}
+                    onChange={(e) => field.onChange(e.target.checked)}
+                    className="checkbox-lg !text-colorTextSecondary !text-base"
+                  >
+                    提供外送服務，外送低消：
+                  </Checkbox>
+                )}
+              />
 
-            <Controller
-              name="deliveryFee"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  size="large"
-                  className="flex-1 !max-w-28 !mr-2"
-                />
-              )}
-            />
-            {errors.deliveryFee && (
-              <ErrorMsg msg={errors.deliveryFee.message} />
-            )}
-          </div>
+              <Controller
+                name="deliveryFee"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    size="large"
+                    className="flex-1 !max-w-28 !mr-2"
+                  />
+                )}
+              />
+            </div>
+          </Form.Item>
         </div>
 
         <div className="flex items-center justify-center gap-x-8 w-full">

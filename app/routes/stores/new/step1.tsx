@@ -3,7 +3,6 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button, Input, Form } from "antd";
-import ErrorMsg from "@components/ErrorMsg";
 const { TextArea } = Input;
 
 const step1Schema = z.object({
@@ -42,17 +41,30 @@ function step1() {
         className="flex flex-col items-center justify-between w-full h-full gap-6"
       >
         <div className="flex flex-col gap-y-2 w-full max-w-[540px]">
-          <Form.Item label="店名" layout="vertical" className="w-full" required>
+          <Form.Item
+            label="店名"
+            validateStatus={errors.storeName ? "error" : undefined}
+            help={errors.storeName?.message}
+            layout="vertical"
+            className="w-full"
+            required
+          >
             <Controller
               name="storeName"
               control={control}
               rules={{ required: true }}
               render={({ field }) => <Input {...field} size="large" />}
             />
-            {errors.storeName && <ErrorMsg msg={errors.storeName.message} />}
           </Form.Item>
 
-          <Form.Item label="電話" layout="vertical" className="w-full" required>
+          <Form.Item
+            label="電話"
+            validateStatus={errors.phoneNumber ? "error" : undefined}
+            help={errors.phoneNumber?.message}
+            layout="vertical"
+            className="w-full"
+            required
+          >
             <Controller
               name="phoneNumber"
               control={control}
@@ -61,9 +73,6 @@ function step1() {
                 <Input {...field} size="large" placeholder="e.g. 0912345678" />
               )}
             />
-            {errors.phoneNumber && (
-              <ErrorMsg msg={errors.phoneNumber.message} />
-            )}
           </Form.Item>
 
           <Form.Item label="地址" layout="vertical" className="w-full ">

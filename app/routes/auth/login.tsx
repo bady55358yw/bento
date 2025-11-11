@@ -1,4 +1,3 @@
-import ErrorMsg from "@components/ErrorMsg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Form, Input } from "antd";
 import { Controller, useForm } from "react-hook-form";
@@ -36,24 +35,33 @@ function login() {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-center w-full max-w-[280px]"
       >
-        <Form.Item label="帳號" layout="vertical" className="w-full ">
+        <Form.Item
+          label="帳號"
+          validateStatus={errors.account ? "error" : undefined}
+          help={errors.account?.message}
+          layout="vertical"
+          className="w-full "
+        >
           <Controller
             name="account"
             control={control}
             rules={{ required: true }}
-            render={({ field }) => <Input {...field} size="large" />}
+            render={({ field: {...field } }) => <Input {...field} size="large" />}
           />
-          {errors.account && <ErrorMsg msg={errors.account.message} />}
         </Form.Item>
-
-        <Form.Item label="密碼" layout="vertical" className="w-full">
+        <Form.Item
+          label="密碼"
+          validateStatus={errors.password ? "error" : undefined}
+          help={errors.password?.message}
+          layout="vertical"
+          className="w-full"
+        >
           <Controller
             name="password"
             control={control}
             rules={{ required: true }}
             render={({ field }) => <Input {...field} size="large" />}
           />
-          {errors.password && <ErrorMsg msg={errors.password.message} />}
         </Form.Item>
 
         <Button htmlType="submit" color="primary" variant="solid">
