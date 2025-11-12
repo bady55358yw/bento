@@ -8,19 +8,19 @@ import { useStoreForm } from "@/store/useStoreForm";
 
 const step2Schema = z
   .object({
-    storeDescription: z.string(),
-    hasDeliveryService: z.boolean(),
-    deliveryFee: z.string().optional(),
+    description: z.string(),
+    deliveryAvailable: z.boolean(),
+    deliveryMinimum: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     if (
-      data.hasDeliveryService &&
-      (!data.deliveryFee || isNaN(Number(data.deliveryFee)))
+      data.deliveryAvailable &&
+      (!data.deliveryMinimum || isNaN(Number(data.deliveryMinimum)))
     ) {
       ctx.addIssue({
         code: "custom",
         message: "外送低消請輸入數字",
-        path: ["deliveryFee"],
+        path: ["deliveryMinimum"],
       });
     }
   });
@@ -56,7 +56,7 @@ function step2() {
         <div className="flex flex-col gap-y-8 w-full max-w-[640px]">
           <Form.Item label="店家描述" layout="vertical" className="w-full">
             <Controller
-              name="storeDescription"
+              name="description"
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
@@ -66,12 +66,12 @@ function step2() {
           </Form.Item>
 
           <Form.Item
-            validateStatus={errors.deliveryFee ? "error" : ""}
-            help={errors.deliveryFee?.message}
+            validateStatus={errors.deliveryMinimum ? "error" : ""}
+            help={errors.deliveryMinimum?.message}
           >
             <div className="flex items-center text-colorTextSecondary">
               <Controller
-                name="hasDeliveryService"
+                name="deliveryAvailable"
                 control={control}
                 rules={{ required: true }}
                 render={({ field }) => (
@@ -86,7 +86,7 @@ function step2() {
               />
 
               <Controller
-                name="deliveryFee"
+                name="deliveryMinimum"
                 control={control}
                 rules={{ required: true }}
                 render={({ field }) => (

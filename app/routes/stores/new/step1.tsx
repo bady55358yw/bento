@@ -7,8 +7,8 @@ const { TextArea } = Input;
 import { useStoreForm } from "@/store/useStoreForm";
 
 const step1Schema = z.object({
-  storeName: z.string().min(1, "請輸入店名"),
-  phoneNumber: z
+  name: z.string().min(1, "請輸入店名"),
+  phone: z
     .string()
     .min(1, "請輸入電話號碼")
     .regex(/^09\d{8}$/, "請輸入以 09 開頭的 10 碼電話號碼"),
@@ -47,14 +47,14 @@ function step1() {
         <div className="flex flex-col gap-y-2 w-full max-w-[540px]">
           <Form.Item
             label="店名"
-            validateStatus={errors.storeName ? "error" : undefined}
-            help={errors.storeName?.message}
+            validateStatus={errors.name ? "error" : undefined}
+            help={errors.name?.message}
             layout="vertical"
             className="w-full"
             required
           >
             <Controller
-              name="storeName"
+              name="name"
               control={control}
               rules={{ required: true }}
               render={({ field }) => <Input {...field} size="large" />}
@@ -63,14 +63,14 @@ function step1() {
 
           <Form.Item
             label="電話"
-            validateStatus={errors.phoneNumber ? "error" : undefined}
-            help={errors.phoneNumber?.message}
+            validateStatus={errors.phone ? "error" : undefined}
+            help={errors.phone?.message}
             layout="vertical"
             className="w-full"
             required
           >
             <Controller
-              name="phoneNumber"
+              name="phone"
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
