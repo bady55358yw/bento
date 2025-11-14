@@ -23,9 +23,9 @@ function stores() {
         <Button
           onClick={() => navigate("/stores/new/step-1")}
           type="dashed"
-          className="flex flex-col !h-[276px]"
+          className="flex flex-col h-[276px]!"
         >
-          <PlusOutlined className="!flex !items-center !justify-center text-lg" />
+          <PlusOutlined className="flex! items-center! justify-center! text-lg" />
           <p>新增店家</p>
         </Button>
 

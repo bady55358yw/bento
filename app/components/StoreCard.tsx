@@ -34,7 +34,7 @@ function StoreCard({ store }: { store: Store }) {
           <h3 className="text-colorText text-2xl font-semibold">
             {store?.name}
           </h3>
-          <Tag color="default" className="!rounded-full">
+          <Tag color="default" className="rounded-full!">
             營業中
           </Tag>
         </div>
