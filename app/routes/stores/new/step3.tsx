@@ -1,7 +1,7 @@
 import { Button } from "antd";
 import { useNavigate } from "react-router";
 import { useStoreForm } from "@/store/useStoreForm";
-import { createStore } from "@/api/stores";
+import { createStore } from "@/api/stores/createStore";
 
 function step3() {
   let navigate = useNavigate();

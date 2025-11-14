@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { Tag, Button, Modal } from "antd";
 import { type Store } from "@/types/stores";
 import Ebike from "@/assets/icon-ebike.svg?react";
-import { deleteStore } from "@/api/stores";
+import { deleteStore } from "@/api/stores/deleteStore";
 
 function StoreCard({ store }: { store: Store }) {
   let navigate = useNavigate();

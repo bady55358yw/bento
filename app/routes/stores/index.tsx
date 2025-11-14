@@ -1,4 +1,4 @@
-import { getStoreList } from "@/api/stores";
+import { getStoreList } from "@/api/stores/getStoreList";
 import { type Store } from "@/types/stores";
 import { PlusOutlined } from "@ant-design/icons";
 import StoreCard from "@components/StoreCard";

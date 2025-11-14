@@ -5,7 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button, Input, Form, Checkbox } from "antd";
 const { TextArea } = Input;
-import { getStore, updateStore } from "@/api/stores";
+import { getStore } from "@/api/stores/getStore";
+import { updateStore } from "@/api/stores/updateStore";
 import { type Store, type CreateStorePayload } from "@/types/stores";
 
 const editSchema = z
