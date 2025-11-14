@@ -42,7 +42,7 @@ function step2() {
 
   const submitForm = (data: Step2Inputs) => {
     setStep2(data); // 儲存 step2 資料到 store
-    navigate("/stores/step-3");
+    navigate("/stores/new/step-3");
   };
 
   return (
@@ -66,6 +66,8 @@ function step2() {
           </Form.Item>
 
           <Form.Item
+            label="外送服務"
+            layout="vertical"
             validateStatus={errors.deliveryMinimum ? "error" : ""}
             help={errors.deliveryMinimum?.message}
           >
@@ -78,9 +80,9 @@ function step2() {
                   <Checkbox
                     checked={field.value}
                     onChange={(e) => field.onChange(e.target.checked)}
-                    className="checkbox-lg !text-colorTextSecondary !text-base"
+                    className="checkbox-lg"
                   >
-                    提供外送服務，外送低消：
+                    是，外送低消
                   </Checkbox>
                 )}
               />
@@ -93,7 +95,7 @@ function step2() {
                   <Input
                     {...field}
                     size="large"
-                    className="flex-1 !max-w-28 !mr-2"
+                    className="flex-1 max-w-28! mr-2!"
                   />
                 )}
               />
@@ -103,7 +105,7 @@ function step2() {
 
         <div className="flex items-center justify-center gap-x-8 w-full">
           <Button
-            onClick={() => navigate("/stores/step-1")}
+            onClick={() => navigate("/stores/new/step-1")}
             size="large"
             color="primary"
             variant="outlined"

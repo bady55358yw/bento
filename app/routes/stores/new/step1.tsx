@@ -33,7 +33,7 @@ function step1() {
 
   const submitForm = (data: Step1Inputs) => {
     setStep1(data) // 儲存 step1 資料到 store
-    navigate("/stores/step-2");
+    navigate("/stores/new/step-2");
   };
 
   return (

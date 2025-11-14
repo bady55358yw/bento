@@ -1,9 +1,9 @@
-import { useNavigate, useLoaderData } from "react-router";
-import { Button } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import StoreCard from "@components/StoreCard";
 import { getStoreList } from "@/api/stores";
 import { type Store } from "@/types/stores";
+import { PlusOutlined } from "@ant-design/icons";
+import StoreCard from "@components/StoreCard";
+import { Button } from "antd";
+import { useLoaderData, useNavigate } from "react-router";
 
 export async function clientLoader() {
   const data = await getStoreList();
@@ -14,7 +14,6 @@ function stores() {
   let navigate = useNavigate();
 
   const storeListData = useLoaderData<typeof clientLoader>();
-  console.log(storeListData);
 
   return (
     <div className="space-y-8 ">
@@ -22,7 +21,7 @@ function stores() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <Button
-          onClick={() => navigate("/stores/step-1")}
+          onClick={() => navigate("/stores/new/step-1")}
           type="dashed"
           className="flex flex-col !h-[276px]"
         >
@@ -33,11 +32,6 @@ function stores() {
         {storeListData?.page?.map((store: Store) => (
           <StoreCard key={store._id} store={store} />
         ))}
-        {/* {Array.from({ length: 5 }).map((_, index) => (
-          <StoreCard key={index} />
-        ))}
-
-        <StoreCard /> */}
       </div>
     </div>
   );

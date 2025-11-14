@@ -1,8 +1,31 @@
-import Ebike from "@/assets/icon-ebike.svg?react";
-import { Tag, Button } from "antd";
+import { useNavigate } from "react-router";
+import { Tag, Button, Modal } from "antd";
 import { type Store } from "@/types/stores";
+import Ebike from "@/assets/icon-ebike.svg?react";
+import { deleteStore } from "@/api/stores";
 
 function StoreCard({ store }: { store: Store }) {
+  let navigate = useNavigate();
+  const [modal, contextHolder] = Modal.useModal();
+
+  const handleDelete = () => {
+    modal.confirm({
+      title: "確定要刪除店家？",
+      content: `「${store?.name}」將會被永久刪除，無法復原。`,
+      okText: "刪除",
+      okType: "danger",
+      cancelText: "取消",
+      onOk: async () => {
+        const isDeleteSuccessed = await deleteStore(store._id);
+        if (!isDeleteSuccessed) {
+          alert("刪除店家失敗")
+        } else {
+          window.location.reload();
+        }
+      },
+    });
+  };
+
   return (
     <div className="flex flex-col h-[280px] bg-white border border-colorBorder rounded-lg p-4 gap-y-2">
       {/* Store Name & Opening Time */}
@@ -30,9 +53,7 @@ function StoreCard({ store }: { store: Store }) {
           {store?.deliveryMinimum !== 0 ? (
             <div className="flex items-center">
               <Ebike className="w-5 h-5" />
-              <p>
-               {`最少 ${store?.deliveryMinimum}`}
-              </p>
+              <p>{`最少 ${store?.deliveryMinimum}`}</p>
             </div>
           ) : (
             ""
@@ -43,10 +64,16 @@ function StoreCard({ store }: { store: Store }) {
 
       {/* Action */}
       <div className="self-end flex gap-1">
-        <Button color="danger" variant="text">
+        {/* Ant Design 的 Modal.useModal() 用 */}
+        {contextHolder}
+        <Button onClick={handleDelete} color="danger" variant="text">
           刪除
         </Button>
-        <Button color="primary" variant="filled">
+        <Button
+          onClick={() => navigate(`/stores/edit/${store._id}`)}
+          color="primary"
+          variant="filled"
+        >
           修改
         </Button>
       </div>

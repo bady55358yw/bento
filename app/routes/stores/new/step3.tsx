@@ -7,7 +7,7 @@ function step3() {
   let navigate = useNavigate();
   const { step1Data, step2Data, reset } = useStoreForm();
 
-  const handleSubmit = async () => {
+  const submitForm = async () => {
     // 組合要給後端的資料
     const payload = {
       ...step1Data,
@@ -16,12 +16,13 @@ function step3() {
       deliveryFee: 0,
     };
 
-    try {
-      const data = await createStore(payload);
+    const data = await createStore(payload);
+
+    if (!data) {
+      alert("新增店家失敗：");
+    } else {
       reset(); // 清空所有表單資料
       navigate("/stores");
-    } catch (err) {
-      console.log("新增店家失敗：", err);
     }
   };
 
@@ -65,7 +66,7 @@ function step3() {
                 <p className="flex-1">{step2Data.description}</p>
               </div>
               <div className="flex items-baseline">
-                <p className="w-32">提供外送服務</p>
+                <p className="w-32">外送服務</p>
                 <p className="flex-1">
                   {step2Data.deliveryAvailable
                     ? `是 / 外送低消 ${step2Data.deliveryMinimum}`
@@ -79,7 +80,7 @@ function step3() {
 
       <div className="flex items-center justify-center gap-x-8 w-full">
         <Button
-          onClick={() => navigate("/stores/step-2")}
+          onClick={() => navigate("/stores/new/step-2")}
           size="large"
           color="primary"
           variant="outlined"
@@ -94,7 +95,7 @@ function step3() {
         </div>
 
         <Button
-          onClick={handleSubmit}
+          onClick={submitForm}
           size="large"
           color="primary"
           variant="solid"

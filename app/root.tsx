@@ -6,10 +6,9 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-
 import type { Route } from "./+types/root";
-import { ConfigProvider } from "antd";
 import "@ant-design/v5-patch-for-react-19";
+import { ConfigProvider } from "antd";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
@@ -25,12 +24,6 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
-const theme = {
-  token: {
-    colorPrimary: "#1677FF",
-  },
-};
-
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="zh-tw">
@@ -41,15 +34,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <ConfigProvider
-          theme={theme}
-          button={{
-            autoInsertSpace: false,
-          }}
-        >
-          {children}
-        </ConfigProvider>
-
+        {children}
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -57,8 +42,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+const theme = {
+  token: {
+    colorPrimary: "#1677FF",
+  },
+};
+
 export default function App() {
-  return <Outlet />;
+  return (
+    <ConfigProvider
+      theme={theme}
+      button={{
+        autoInsertSpace: false,
+      }}
+    >
+      <Outlet />
+    </ConfigProvider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
