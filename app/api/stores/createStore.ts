@@ -1,8 +1,9 @@
-import { type CreateStorePayload } from "@/types/stores";
+import { type StorePayload } from "@/types/stores";
+import { API_BASE_URL } from "@/api/config";
 
-export const createStore = async (storeData: CreateStorePayload) => {
+export const createStore = async (storeData: StorePayload) => {
   try {
-    const res = await fetch("https://bento-api.qzcurious.link/stores", {
+    const res = await fetch(`${API_BASE_URL}/stores`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -10,15 +11,23 @@ export const createStore = async (storeData: CreateStorePayload) => {
       body: JSON.stringify(storeData),
     });
 
+    // 處理失敗 response
     if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`HTTP ${res.status}: ${errorText}`);
+      const errorText = await res.json();
+      console.error(errorText);
+      alert(`新增店家失敗：${errorText.message}`);
+
+      return null;
     }
 
+    // 處理成功 response
     const data = await res.json();
     return data;
   } catch (err) {
-    console.log("新增店家失敗：", err);
+    // 處理例外錯誤
+    console.error(err);
+    alert("新增店家失敗，請聯絡管理員");
+
     return null;
   }
 };

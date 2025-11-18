@@ -18,9 +18,7 @@ function step3() {
 
     const data = await createStore(payload);
 
-    if (!data) {
-      alert("新增店家失敗：");
-    } else {
+    if (data) {
       reset(); // 清空所有表單資料
       navigate("/stores");
     }

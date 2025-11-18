@@ -7,7 +7,7 @@ import { Button, Input, Form, Checkbox } from "antd";
 const { TextArea } = Input;
 import { getStore } from "@/api/stores/getStore";
 import { updateStore } from "@/api/stores/updateStore";
-import { type Store, type CreateStorePayload } from "@/types/stores";
+import { type Store, type StorePayload } from "@/types/stores";
 
 const editSchema = z
   .object({
@@ -65,7 +65,7 @@ function edit() {
 
   const submitForm = async (data: EditInputs) => {
     // 組合要給後端的資料
-    const payload: CreateStorePayload = {
+    const payload: StorePayload = {
       name: data.name,
       description: data.description,
       phone: data.phone,
@@ -79,8 +79,6 @@ function edit() {
 
     if (isEditSuccessed) {
       navigate("/stores");
-    } else {
-      alert("修改店家失敗");
     }
   };
 

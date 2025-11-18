@@ -16,7 +16,7 @@ export type StoresResponse = {
   isDone: boolean;
 };
 
-export type CreateStorePayload = {
+export type StorePayload = {
   name: string;
   description: string;
   phone: string;

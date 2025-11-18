@@ -17,9 +17,7 @@ function StoreCard({ store }: { store: Store }) {
       cancelText: "取消",
       onOk: async () => {
         const isDeleteSuccessed = await deleteStore(store._id);
-        if (!isDeleteSuccessed) {
-          alert("刪除店家失敗")
-        } else {
+        if (isDeleteSuccessed) {
           window.location.reload();
         }
       },
