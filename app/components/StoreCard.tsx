@@ -3,6 +3,7 @@ import { Tag, Button, Modal } from "antd";
 import { type Store } from "@/types/stores";
 import Ebike from "@/assets/icon-ebike.svg?react";
 import { deleteStore } from "@/api/stores/deleteStore";
+import { CloseOutlined,AppstoreAddOutlined } from "@ant-design/icons";
 
 function StoreCard({ store }: { store: Store }) {
   let navigate = useNavigate();
@@ -25,22 +26,34 @@ function StoreCard({ store }: { store: Store }) {
   };
 
   return (
-    <div className="flex flex-col h-[280px] bg-white border border-colorBorder rounded-lg p-4 gap-y-2">
+    <div className="flex flex-col h-[280px] bg-white border border-colorBorder rounded-2xl p-4 gap-y-3">
       {/* Store Name & Opening Time */}
       <div className="space-y-1">
         <div className="flex items-center justify-between">
-          <h3 className="text-colorText text-2xl font-semibold">
+          <h3 className="text-colorText text-xl font-medium">
             {store?.name}
           </h3>
-          <Tag color="default" className="rounded-full!">
-            營業中
-          </Tag>
+
+          <div className="flex flex-col">
+            <Button
+              onClick={handleDelete}
+              color="default"
+              variant="link"
+              className="text-gray-400! text-sm! hover:text-colorPrimaryHover!"
+            >
+              <CloseOutlined />
+            </Button>
+
+            {/* <Tag color="default" className="rounded-full!">
+              營業中
+            </Tag> */}
+          </div>
         </div>
-        <h6 className="text-colorTextTertiary text-xs">結束營業時間：14:30</h6>
+        {/* <h6 className="text-colorTextTertiary text-xs">結束營業時間：14:30</h6> */}
       </div>
 
       {/* Store Description */}
-      <div className="flex-1 text-colorTextSecondary h-full text-base">
+      <div className="flex-1 text-colorTextTertiary h-full text-base">
         {store?.description}
       </div>
 
@@ -50,8 +63,8 @@ function StoreCard({ store }: { store: Store }) {
           <p>{store?.phone}</p>
           {store?.deliveryMinimum !== 0 ? (
             <div className="flex items-center">
-              <Ebike className="w-5 h-5" />
-              <p>{`最少 ${store?.deliveryMinimum}`}</p>
+              <Ebike className="w-4.5 h-4.5 text-colorPrimary/60!" />
+              <p className="text-colorText">{`最少 ${store?.deliveryMinimum}`}</p>
             </div>
           ) : (
             ""
@@ -61,18 +74,21 @@ function StoreCard({ store }: { store: Store }) {
       </div>
 
       {/* Action */}
-      <div className="self-end flex gap-1">
+      <div className="self-end flex gap-2">
         {/* Ant Design 的 Modal.useModal() 用 */}
         {contextHolder}
-        <Button onClick={handleDelete} color="danger" variant="text">
-          刪除
-        </Button>
         <Button
           onClick={() => navigate(`/stores/edit/${store._id}`)}
-          color="primary"
-          variant="filled"
+          color="cyan"
+          variant="outlined"
         >
           修改
+        </Button>
+        <Button
+          color="primary"
+          variant="outlined"
+        >
+          管理
         </Button>
       </div>
     </div>

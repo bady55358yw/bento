@@ -5,7 +5,7 @@
 
   --color-colorError: #ff4d4f;
 
-  --color-colorText: rgba(0, 0, 0, 0.88);
+  --color-colorText: rgba(0, 0, 0, 0.80);
   --color-colorTextSecondary: rgba(0, 0, 0, 0.65);
   --color-colorTextTertiary: rgba(0, 0, 0, 0.45);
   --color-colorTextQuaternary: rgba(0, 0, 0, 0.25);
@@ -13,6 +13,8 @@
   --color-colorPrimaryBorder: #91caff;
   --color-colorBorder: #d9d9d9;
   --color-colorBorderSecondary: #f0f0f0;
+
+  --color-colorPrimaryHover: #4096ff;
 
   --color-colorFill: rgba(0, 0, 0, 0.15);
   --color-colorFillSecondary: rgba(0, 0, 0, 0.06);
