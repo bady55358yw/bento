@@ -3,7 +3,7 @@ import { Tag, Button, Modal } from "antd";
 import { type Store } from "@/types/stores";
 import Ebike from "@/assets/icon-ebike.svg?react";
 import { deleteStore } from "@/api/stores/deleteStore";
-import { CloseOutlined,AppstoreAddOutlined } from "@ant-design/icons";
+import { CloseOutlined,ExclamationCircleOutlined } from "@ant-design/icons";
 
 function StoreCard({ store }: { store: Store }) {
   let navigate = useNavigate();
@@ -16,6 +16,7 @@ function StoreCard({ store }: { store: Store }) {
       okText: "刪除",
       okType: "danger",
       cancelText: "取消",
+      icon: <ExclamationCircleOutlined />,
       onOk: async () => {
         const isDeleteSuccessed = await deleteStore(store._id);
         if (isDeleteSuccessed) {
@@ -26,7 +27,7 @@ function StoreCard({ store }: { store: Store }) {
   };
 
   return (
-    <div className="flex flex-col h-[280px] bg-white border border-colorBorder rounded-2xl p-4 gap-y-3">
+    <div className="flex flex-col min-w-[260px] h-[280px] bg-white border border-colorBorder rounded-2xl p-4 gap-y-3">
       {/* Store Name & Opening Time */}
       <div className="space-y-1">
         <div className="flex items-center justify-between">
@@ -85,6 +86,7 @@ function StoreCard({ store }: { store: Store }) {
           修改
         </Button>
         <Button
+          onClick={() => navigate(`/stores/${store._id}`,{state:{store}})}
           color="primary"
           variant="outlined"
         >

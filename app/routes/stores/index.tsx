@@ -23,10 +23,9 @@ function stores() {
         <Button
           onClick={() => navigate("/stores/new/step-1")}
           type="dashed"
-          className="flex flex-col h-[276px]! rounded-2xl!"
+          className="flex flex-col h-[276px]! rounded-2xl! text-colorTextTertiary! hover:text-colorPrimaryHover!"
         >
-          <PlusOutlined className="flex! items-center! justify-center! text-lg" />
-          <p>新增店家</p>
+          <PlusOutlined className="flex! items-center! justify-center! text-2xl" />
         </Button>
 
         {storeListData?.page?.map((store: Store) => (
