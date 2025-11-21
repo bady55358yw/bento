@@ -1,12 +1,11 @@
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
 import { Tag, Button, Modal } from "antd";
 import { type Store } from "@/types/stores";
 import Ebike from "@/assets/icon-ebike.svg?react";
 import { deleteStore } from "@/api/stores/deleteStore";
-import { CloseOutlined,ExclamationCircleOutlined } from "@ant-design/icons";
+import { CloseOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 
 function StoreCard({ store }: { store: Store }) {
-  let navigate = useNavigate();
   const [modal, contextHolder] = Modal.useModal();
 
   const handleDelete = () => {
@@ -31,9 +30,7 @@ function StoreCard({ store }: { store: Store }) {
       {/* Store Name & Opening Time */}
       <div className="space-y-1">
         <div className="flex items-center justify-between">
-          <h3 className="text-colorText text-xl font-medium">
-            {store?.name}
-          </h3>
+          <h3 className="text-colorText text-xl font-medium">{store?.name}</h3>
 
           <div className="flex flex-col">
             <Button
@@ -78,20 +75,17 @@ function StoreCard({ store }: { store: Store }) {
       <div className="self-end flex gap-2">
         {/* Ant Design 的 Modal.useModal() 用 */}
         {contextHolder}
-        <Button
-          onClick={() => navigate(`/stores/edit/${store._id}`)}
-          color="cyan"
-          variant="outlined"
-        >
-          修改
-        </Button>
-        <Button
-          onClick={() => navigate(`/stores/${store._id}`,{state:{store}})}
-          color="primary"
-          variant="outlined"
-        >
-          管理
-        </Button>
+        <Link to={`/stores/edit/${store._id}`}>
+          <Button color="cyan" variant="outlined">
+            修改
+          </Button>
+        </Link>
+
+        <Link to={`/stores/${store._id}`}>
+          <Button color="primary" variant="outlined">
+            管理
+          </Button>
+        </Link>
       </div>
     </div>
   );

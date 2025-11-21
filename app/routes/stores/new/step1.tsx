@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -19,7 +19,7 @@ type Step1Inputs = z.infer<typeof step1Schema>;
 
 function step1() {
   let navigate = useNavigate();
-  const { step1Data, setStep1 } = useStoreForm()
+  const { step1Data, setStep1 } = useStoreForm();
 
   const {
     handleSubmit,
@@ -30,9 +30,8 @@ function step1() {
     defaultValues: step1Data, // 使用 store 的 step1Data 初始值
   });
 
-
   const submitForm = (data: Step1Inputs) => {
-    setStep1(data) // 儲存 step1 資料到 store
+    setStep1(data); // 儲存 step1 資料到 store
     navigate("/stores/new/step-2");
   };
 
@@ -90,15 +89,16 @@ function step1() {
         </div>
 
         <div className="flex items-center justify-center gap-x-8 w-full">
-          <Button
-            onClick={() => navigate("/stores")}
-            size="large"
-            color="primary"
-            variant="outlined"
-            className="w-[80px]"
-          >
-            取消
-          </Button>
+          <Link to="/stores">
+            <Button
+              size="large"
+              color="primary"
+              variant="outlined"
+              className="w-[80px]"
+            >
+              取消
+            </Button>
+          </Link>
 
           <div className="flex gap-x-2">
             <span className="block w-16 h-1 bg-colorBgSpotlight"></span>

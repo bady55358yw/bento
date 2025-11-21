@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { useStoreForm } from "@/store/useStoreForm";
 import { createStore } from "@/api/stores/createStore";
 
@@ -77,14 +77,11 @@ function step3() {
       </div>
 
       <div className="flex items-center justify-center gap-x-8 w-full">
-        <Button
-          onClick={() => navigate("/stores/new/step-2")}
-          size="large"
-          color="primary"
-          variant="outlined"
-        >
-          上一步
-        </Button>
+        <Link to="/stores/new/step-2">
+          <Button size="large" color="primary" variant="outlined">
+            上一步
+          </Button>
+        </Link>
 
         <div className="flex gap-x-2">
           <span className="block w-16 h-1 bg-colorBgSpotlight"></span>

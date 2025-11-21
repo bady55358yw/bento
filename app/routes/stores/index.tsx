@@ -3,7 +3,7 @@ import { type Store } from "@/types/stores";
 import { PlusOutlined } from "@ant-design/icons";
 import StoreCard from "@components/StoreCard";
 import { Button } from "antd";
-import { useLoaderData, useNavigate } from "react-router";
+import { useLoaderData, Link } from "react-router";
 
 export async function clientLoader() {
   const data = await getStoreList();
@@ -11,8 +11,6 @@ export async function clientLoader() {
 }
 
 function stores() {
-  let navigate = useNavigate();
-
   const storeListData = useLoaderData<typeof clientLoader>();
 
   return (
@@ -20,13 +18,14 @@ function stores() {
       <h2 className="text-gray-800 text-2xl font-medium">店家列表</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <Button
-          onClick={() => navigate("/stores/new/step-1")}
-          type="dashed"
-          className="flex flex-col h-[276px]! rounded-2xl! text-colorTextTertiary! hover:text-colorPrimaryHover!"
-        >
-          <PlusOutlined className="flex! items-center! justify-center! text-2xl" />
-        </Button>
+        <Link to="/stores/new/step-1">
+          <Button
+            type="dashed"
+            className="flex flex-col h-[276px]! rounded-2xl! text-colorTextTertiary! hover:text-colorPrimaryHover!"
+          >
+            <PlusOutlined className="flex! items-center! justify-center! text-2xl" />
+          </Button>
+        </Link>
 
         {storeListData?.page?.map((store: Store) => (
           <StoreCard key={store._id} store={store} />

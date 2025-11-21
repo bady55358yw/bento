@@ -1,4 +1,4 @@
-import { useNavigate, useLoaderData } from "react-router";
+import { useNavigate, useLoaderData, Link } from "react-router";
 import type { Route } from "./+types/edit";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -221,15 +221,16 @@ function edit() {
         </div>
 
         <div className="flex items-center justify-center gap-x-8 w-full">
-          <Button
-            onClick={() => navigate("/stores")}
-            size="large"
-            color="primary"
-            variant="outlined"
-            className="w-[80px]"
-          >
-            取消
-          </Button>
+          <Link to="/stores">
+            <Button
+              size="large"
+              color="primary"
+              variant="outlined"
+              className="w-[80px]"
+            >
+              取消
+            </Button>
+          </Link>
 
           <Button
             onClick={handleSubmit(submitForm)}

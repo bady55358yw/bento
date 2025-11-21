@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -104,14 +104,11 @@ function step2() {
         </div>
 
         <div className="flex items-center justify-center gap-x-8 w-full">
-          <Button
-            onClick={() => navigate("/stores/new/step-1")}
-            size="large"
-            color="primary"
-            variant="outlined"
-          >
-            上一步
-          </Button>
+          <Link to="/stores/new/step-1">
+            <Button size="large" color="primary" variant="outlined">
+              上一步
+            </Button>
+          </Link>
 
           <div className="flex gap-x-2">
             <span className="block w-16 h-1 bg-colorBgSpotlight"></span>
