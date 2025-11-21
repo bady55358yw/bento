@@ -1,21 +1,20 @@
 import { getCategoryList } from "@/api/category/getCategoryList";
-import type { Store } from "@/types/stores";
+import { getStore } from "@/api/stores/getStore";
 import { SwapLeftOutlined } from "@ant-design/icons";
 import Category from "@components/Category";
 import StoreCard from "@components/StoreCard";
 import { Button } from "antd";
-import { useLoaderData, useLocation, Link } from "react-router";
+import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/index";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const categoryData = await getCategoryList(params.storeId);
-  return categoryData;
+  const storeData = await getStore(params.storeId);
+  return { storeData, categoryData };
 }
 
 function index() {
-  const categoryData = useLoaderData<typeof clientLoader>();
-  const { state } = useLocation();
-  const storeData: Store = state?.store;
+  const { storeData, categoryData } = useLoaderData<typeof clientLoader>();
 
   return (
     <div className="flex flex-col gap-y-8 h-full">
