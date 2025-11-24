@@ -5,7 +5,12 @@ import Ebike from "@/assets/icon-ebike.svg?react";
 import { deleteStore } from "@/api/stores/deleteStore";
 import { CloseOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 
-function StoreCard({ store }: { store: Store }) {
+type StoreCardProps = {
+  store: Store;
+  hasAction?: boolean;
+};
+
+function StoreCard({ store, hasAction = true }: StoreCardProps) {
   const [modal, contextHolder] = Modal.useModal();
 
   const handleDelete = () => {
@@ -26,21 +31,25 @@ function StoreCard({ store }: { store: Store }) {
   };
 
   return (
-    <div className="flex flex-col min-w-[260px] h-[280px] bg-white border border-colorBorder rounded-2xl p-4 gap-y-3">
+    <div
+      className={`flex flex-col min-w-[260px] w-full ${hasAction === false ? "h-full" : "h-[280px]"} lg:h-[280px] bg-white border border-colorBorder rounded-2xl p-4 gap-y-3`}
+    >
       {/* Store Name & Opening Time */}
       <div className="space-y-1">
         <div className="flex items-center justify-between">
           <h3 className="text-colorText text-xl font-medium">{store?.name}</h3>
 
           <div className="flex flex-col">
-            <Button
-              onClick={handleDelete}
-              color="default"
-              variant="link"
-              className="text-gray-400! text-sm! hover:text-colorPrimaryHover!"
-            >
-              <CloseOutlined />
-            </Button>
+            {hasAction && (
+              <Button
+                onClick={handleDelete}
+                color="default"
+                variant="link"
+                className="text-gray-400! text-sm! hover:text-colorPrimaryHover!"
+              >
+                <CloseOutlined />
+              </Button>
+            )}
 
             {/* <Tag color="default" className="rounded-full!">
               營業中
@@ -56,7 +65,7 @@ function StoreCard({ store }: { store: Store }) {
       </div>
 
       {/* Store Info */}
-      <div className="text-xs border-b border-colorBorderSecondary pb-2">
+      <div className="text-xs space-y-1.5">
         <div className="flex items-center justify-between text-colorTextSecondary">
           <p>{store?.phone}</p>
           {store?.deliveryMinimum !== 0 ? (
@@ -72,21 +81,23 @@ function StoreCard({ store }: { store: Store }) {
       </div>
 
       {/* Action */}
-      <div className="self-end flex gap-2">
-        {/* Ant Design 的 Modal.useModal() 用 */}
-        {contextHolder}
-        <Link to={`/stores/edit/${store._id}`}>
-          <Button color="cyan" variant="outlined">
-            修改
-          </Button>
-        </Link>
+      {hasAction && (
+        <div className="flex justify-end gap-2 border-t border-colorBorderSecondary pt-2 w-full">
+          {/* Ant Design 的 Modal.useModal() 用 */}
+          {contextHolder}
+          <Link to={`/stores/edit/${store._id}`}>
+            <Button color="cyan" variant="outlined">
+              修改
+            </Button>
+          </Link>
 
-        <Link to={`/stores/${store._id}`}>
-          <Button color="primary" variant="outlined">
-            管理
-          </Button>
-        </Link>
-      </div>
+          <Link to={`/stores/${store._id}`}>
+            <Button color="primary" variant="outlined">
+              管理
+            </Button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

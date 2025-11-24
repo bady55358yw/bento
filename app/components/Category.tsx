@@ -218,6 +218,8 @@ function Category({ storeId, categoryData }: CategoryProps) {
         type="editable-card"
         onEdit={onEdit}
         items={categories}
+        size="large"
+        tabBarGutter={10}
       />
 
       {/* 新增類別的彈窗 */}

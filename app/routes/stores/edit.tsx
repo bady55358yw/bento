@@ -8,6 +8,8 @@ const { TextArea } = Input;
 import { getStore } from "@/api/stores/getStore";
 import { updateStore } from "@/api/stores/updateStore";
 import { type Store, type StorePayload } from "@/types/stores";
+import { useContext, useEffect } from "react";
+import { HeaderContext } from "@/layouts/HeaderContext";
 
 const editSchema = z
   .object({
@@ -44,6 +46,12 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 function edit() {
   let navigate = useNavigate();
   const { storeData, storeId } = useLoaderData<typeof clientLoader>();
+  const { setHeaderMode } = useContext(HeaderContext);
+
+  // 設置不顯示 Header
+  useEffect(() => {
+    setHeaderMode("none");
+  }, []);
 
   const filterStoreData = {
     address: storeData.address,
