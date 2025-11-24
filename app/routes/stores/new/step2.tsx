@@ -5,6 +5,8 @@ import * as z from "zod";
 import { Button, Checkbox, Form, Input } from "antd";
 const { TextArea } = Input;
 import { useStoreForm } from "@/store/useStoreForm";
+import { useContext, useEffect } from "react";
+import { HeaderContext } from "@/layouts/HeaderContext";
 
 const step2Schema = z
   .object({
@@ -30,6 +32,12 @@ type Step2Inputs = z.infer<typeof step2Schema>;
 function step2() {
   let navigate = useNavigate();
   const { step2Data, setStep2 } = useStoreForm();
+  const { setHeaderMode } = useContext(HeaderContext);
+
+  // 設置不顯示 Header
+  useEffect(() => {
+    setHeaderMode("none");
+  }, []);
 
   const {
     control,

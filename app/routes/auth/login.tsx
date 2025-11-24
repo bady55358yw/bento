@@ -1,8 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Form, Input } from "antd";
+import { useContext, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import * as z from "zod";
+import { HeaderContext } from "@/layouts/HeaderContext";
 
 const loginSchema = z.object({
   account: z.string().min(1, "請輸入帳號").min(3, "帳號需至少 3 個字元"),
@@ -13,6 +15,12 @@ type Inputs = z.infer<typeof loginSchema>;
 
 function login() {
   let navigate = useNavigate();
+  const { setHeaderMode } = useContext(HeaderContext);
+
+  // 設置顯示 Header-withoutLogin
+  useEffect(() => {
+    setHeaderMode("withoutLogin");
+  }, []);
 
   const {
     handleSubmit,
@@ -46,7 +54,9 @@ function login() {
             name="account"
             control={control}
             rules={{ required: true }}
-            render={({ field: {...field } }) => <Input {...field} size="large" />}
+            render={({ field: { ...field } }) => (
+              <Input {...field} size="large" />
+            )}
           />
         </Form.Item>
         <Form.Item

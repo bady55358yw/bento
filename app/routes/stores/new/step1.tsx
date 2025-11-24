@@ -5,6 +5,8 @@ import * as z from "zod";
 import { Button, Input, Form } from "antd";
 const { TextArea } = Input;
 import { useStoreForm } from "@/store/useStoreForm";
+import { useContext, useEffect } from "react";
+import { HeaderContext } from "@/layouts/HeaderContext";
 
 const step1Schema = z.object({
   name: z.string().min(1, "請輸入店名"),
@@ -20,6 +22,12 @@ type Step1Inputs = z.infer<typeof step1Schema>;
 function step1() {
   let navigate = useNavigate();
   const { step1Data, setStep1 } = useStoreForm();
+  const { headerMode, setHeaderMode } = useContext(HeaderContext);
+
+  // 設置不顯示 Header
+  useEffect(() => {
+    setHeaderMode("none");
+  }, []);
 
   const {
     handleSubmit,
@@ -38,7 +46,6 @@ function step1() {
   return (
     <div className="flex flex-col items-center w-full h-full gap-4">
       <h1 className="text-3xl text-colorText my-6">Step 1｜選擇店家</h1>
-
       <form
         onSubmit={handleSubmit(submitForm)}
         className="flex flex-col items-center justify-between w-full h-full gap-6"

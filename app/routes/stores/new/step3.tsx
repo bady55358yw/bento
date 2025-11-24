@@ -2,10 +2,18 @@ import { Button } from "antd";
 import { useNavigate, Link } from "react-router";
 import { useStoreForm } from "@/store/useStoreForm";
 import { createStore } from "@/api/stores/createStore";
+import { useContext, useEffect } from "react";
+import { HeaderContext } from "@/layouts/HeaderContext";
 
 function step3() {
   let navigate = useNavigate();
   const { step1Data, step2Data, reset } = useStoreForm();
+  const { setHeaderMode } = useContext(HeaderContext);
+
+  // 設置不顯示 Header
+  useEffect(() => {
+    setHeaderMode("none");
+  }, []);
 
   const submitForm = async () => {
     // 組合要給後端的資料

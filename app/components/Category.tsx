@@ -1,4 +1,4 @@
-import { Button, Input, Modal, Tabs } from "antd";
+import { Form, Input, Modal, Tabs } from "antd";
 import { EditOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { createCategory } from "@/api/category/createCategory";
@@ -23,6 +23,7 @@ function Category({ storeId, categoryData }: CategoryProps) {
 
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<string>("");
   const [editingCategoryId, setEditingCategoryId] = useState<string>("");
 
   const [modal, contextHolder] = Modal.useModal();
@@ -41,6 +42,7 @@ function Category({ storeId, categoryData }: CategoryProps) {
               onClick={(e) => {
                 e.stopPropagation();
                 setIsEditModalOpen(true);
+                setErrorMsg("");
                 setCategoryName(c.title);
                 setEditingCategoryId(c._id);
               }}
@@ -62,11 +64,16 @@ function Category({ storeId, categoryData }: CategoryProps) {
   const handleOpenModal = () => {
     setIsAddModalOpen(true);
     setCategoryName("");
+    setErrorMsg("");
   };
 
   // 處理「新增類別功能」
   const handleAddCategory = async () => {
-    if (!categoryName.trim()) return;
+    if (!categoryName.trim()) {
+      setErrorMsg("請輸入類別名稱");
+      return;
+    }
+
     const payload: CreateCategoryPayload = {
       title: categoryName,
     };
@@ -82,6 +89,7 @@ function Category({ storeId, categoryData }: CategoryProps) {
               onClick={(e) => {
                 e.stopPropagation();
                 setIsEditModalOpen(true);
+                setErrorMsg("");
                 setCategoryName(categoryName);
               }}
               className="text-colorTextTertiary! hover:text-colorText! transition!"
@@ -101,7 +109,10 @@ function Category({ storeId, categoryData }: CategoryProps) {
 
   // 處理「修改類別功能」
   const handleEditCategory = async () => {
-    if (!categoryName.trim()) return;
+    if (!categoryName.trim()) {
+      setErrorMsg("請輸入類別名稱");
+      return;
+    }
 
     const payload: UpdateCategoryPayload = {
       title: categoryName,
@@ -127,6 +138,7 @@ function Category({ storeId, categoryData }: CategoryProps) {
                       onClick={(e) => {
                         e.stopPropagation();
                         setIsEditModalOpen(true);
+                        setErrorMsg("");
                         setCategoryName(categoryName);
                         setEditingCategoryId(editingCategoryId);
                       }}
@@ -134,7 +146,7 @@ function Category({ storeId, categoryData }: CategoryProps) {
                     />
                   </span>
                 ),
-                title: categoryName
+                title: categoryName,
               }
             : cate
         )
@@ -147,7 +159,9 @@ function Category({ storeId, categoryData }: CategoryProps) {
   // 處理「刪除類別功能」
   const handleDeleteCategory = async (targeyCategoryId: TargetKey) => {
     const categoryId = targeyCategoryId as string; // 將 categoryId 強制轉為 string
-    const categoryName = categories.find((cate) => cate.key === categoryId)?.title;
+    const categoryName = categories.find(
+      (cate) => cate.key === categoryId
+    )?.title;
 
     modal.confirm({
       title: "確定要刪除類別？",
@@ -221,6 +235,7 @@ function Category({ storeId, categoryData }: CategoryProps) {
             onChange={(e) => setCategoryName(e.target.value)}
             placeholder="輸入類別名稱"
           ></Input>
+          {errorMsg && <p className="text-colorError mt-1">{errorMsg}</p>}
         </form>
       </Modal>
 
@@ -239,6 +254,7 @@ function Category({ storeId, categoryData }: CategoryProps) {
             onChange={(e) => setCategoryName(e.target.value)}
             placeholder="輸入類別名稱"
           ></Input>
+          {errorMsg && <p className="text-colorError mt-1">{errorMsg}</p>}
         </form>
       </Modal>
 
