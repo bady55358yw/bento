@@ -23,6 +23,7 @@
   
   --color-colorBgLayout: #f5f5f5;
   --color-colorBgSpotlight:rgba(0,0,0,0.85);
+  --color-colorPrimaryBg: #e6f4ff;
 }
 
 .checkbox-lg .ant-checkbox-inner {
