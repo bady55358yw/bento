@@ -1,22 +1,28 @@
-import { Form, Input, Modal, Tabs } from "antd";
-import { EditOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  ExclamationCircleOutlined
+} from "@ant-design/icons";
+import { Input, Modal, Tabs } from "antd";
 import React, { useEffect, useState } from "react";
+
 import { createCategory } from "@/api/category/createCategory";
-import { updateCategory } from "@/api/category/updateCategory";
 import { deleteCategory } from "@/api/category/deleteCategory";
+import { updateCategory } from "@/api/category/updateCategory";
+import Products from "@/components/Products/";
+
 import type {
   CategoryResponse,
-  UpdateCategoryPayload,
   CreateCategoryPayload,
+  UpdateCategoryPayload,
 } from "@/types/category";
 
 type CategoryProps = {
   storeId: string;
-  categoryData: CategoryResponse;
+  categoryListData: CategoryResponse;
 };
 type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
 
-function Category({ storeId, categoryData }: CategoryProps) {
+function Category({ storeId, categoryListData }: CategoryProps) {
   const [categories, setCategories] = useState<any[]>([]);
   const [categoryName, setCategoryName] = useState<string>("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -28,9 +34,9 @@ function Category({ storeId, categoryData }: CategoryProps) {
 
   const [modal, contextHolder] = Modal.useModal();
 
-  // 先把後端的 categoryData 放到 tabs
+  // 先把 categoryListData 放到 tabs
   useEffect(() => {
-    const categoryList = categoryData.page;
+    const categoryList = categoryListData.page;
     if (categoryList.length > 0) {
       // 把類別列表資料轉成 Ant design 對應的
       const mapCategories = categoryList.map((c) => ({
@@ -52,13 +58,14 @@ function Category({ storeId, categoryData }: CategoryProps) {
         ),
         title: c.title,
         key: c._id, // 類別唯一值
-        children: null, // 類別內容
+        // 類別內容
+        children: <Products categoryId={c._id} />,
       }));
 
       setCategories(mapCategories);
       setActiveCategory(categoryList[0]?._id);
     }
-  }, [categoryData]);
+  }, [categoryListData]);
 
   // 處理點擊「新增類別按鈕」的事件觸發
   const handleOpenModal = () => {
@@ -78,9 +85,9 @@ function Category({ storeId, categoryData }: CategoryProps) {
       title: categoryName,
     };
 
-    const categoryData = await createCategory(storeId, payload);
+    const categoryListData = await createCategory(storeId, payload);
 
-    if (categoryData) {
+    if (categoryListData) {
       const newCategory = {
         label: (
           <span className="flex items-center gap-4">
@@ -97,12 +104,12 @@ function Category({ storeId, categoryData }: CategoryProps) {
           </span>
         ), // 類別名稱
         title: categoryName,
-        key: categoryData._id, // 類別唯一值
+        key: categoryListData._id, // 類別唯一值
         children: null, // 類別內容
       };
 
       setCategories((prev) => [...prev, newCategory]);
-      setActiveCategory(categoryData._id);
+      setActiveCategory(categoryListData._id);
       setIsAddModalOpen(false);
     }
   };
