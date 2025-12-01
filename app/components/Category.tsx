@@ -105,7 +105,7 @@ function Category({ storeId, categoryListData }: CategoryProps) {
         ), // 類別名稱
         title: categoryName,
         key: categoryListData._id, // 類別唯一值
-        children: null, // 類別內容
+        children: <Products categoryId={categoryListData._id} />, // 類別內容
       };
 
       setCategories((prev) => [...prev, newCategory]);

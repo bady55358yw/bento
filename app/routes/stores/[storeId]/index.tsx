@@ -1,24 +1,26 @@
+import { SwapRightOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 import { useContext, useEffect } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/index";
-import { Button } from "antd";
-import { PlusOutlined, SwapRightOutlined } from "@ant-design/icons";
+import type { Products } from '@/types/product'
 
 import { getCategoryList } from "@/api/category/getCategoryList";
+import { getProductList } from "@/api/product/getProductList";
 import { getStore } from "@/api/stores/getStore";
 import { HeaderContext } from "@/layouts/HeaderContext";
 import Category from "@components/Category";
 import StoreCard from "@components/StoreCard";
-import ProductCard from '@components/ProductCard'
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const categoryData = await getCategoryList(params.storeId);
   const storeData = await getStore(params.storeId);
-  return { storeData, categoryData };
+  const categoryListData = await getCategoryList(params.storeId);
+  const productListData: Products  = await getProductList(params.storeId)
+  return { storeData, categoryListData, productListData };
 }
 
 function index() {
-  const { storeData, categoryData } = useLoaderData<typeof clientLoader>();
+  const { storeData, categoryListData } = useLoaderData<typeof clientLoader>();
   const { setHeaderMode } = useContext(HeaderContext);
 
   // 設置不顯示 Header
@@ -45,19 +47,7 @@ function index() {
 
         <div className="flex-1 flex flex-col min-w-0">
           {/* 類別 */}
-          <Category storeId={storeData._id} categoryData={categoryData} />
-
-          {/* 商品 */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 py-2">
-            <Button
-              type="dashed"
-              className="h-[200px]! min-w-[142px] rounded-xl! text-colorTextTertiary! hover:text-colorPrimaryHover!"
-            >
-              <PlusOutlined className="flex! items-center! justify-center! text-2xl" />
-            </Button>
-
-            <ProductCard />
-          </div>
+          <Category storeId={storeData._id} categoryListData={categoryListData} />
         </div>
       </div>
     </div>
