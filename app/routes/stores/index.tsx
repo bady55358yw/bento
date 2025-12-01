@@ -1,12 +1,11 @@
+import { reset } from "@/api/reset";
 import { getStoreList } from "@/api/stores/getStoreList";
 import { HeaderContext } from "@/layouts/HeaderContext";
-import { type Store } from "@/types/stores";
-import { PlusOutlined,ClearOutlined } from "@ant-design/icons";
+import { ClearOutlined, PlusOutlined } from "@ant-design/icons";
 import StoreCard from "@components/StoreCard";
 import { Button } from "antd";
 import { useContext, useEffect } from "react";
-import { useLoaderData, Link, useRevalidator } from "react-router";
-import { reset } from "@/api/reset";
+import { Link, useLoaderData, useRevalidator } from "react-router";
 
 export async function clientLoader() {
   const data = await getStoreList();
@@ -15,7 +14,7 @@ export async function clientLoader() {
 
 function stores() {
   const storeListData = useLoaderData<typeof clientLoader>();
-  const { headerMode, setHeaderMode } = useContext(HeaderContext);
+  const { setHeaderMode } = useContext(HeaderContext);
 
   // 設置顯示 Header-full
   useEffect(() => {
@@ -52,7 +51,7 @@ function stores() {
           </Button>
         </Link>
 
-        {storeListData?.page?.map((store: Store) => (
+        {storeListData?.page?.map((store) => (
           <StoreCard key={store._id} store={store} />
         ))}
       </div>

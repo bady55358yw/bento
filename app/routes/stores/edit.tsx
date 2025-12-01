@@ -7,7 +7,6 @@ import { Button, Input, Form, Checkbox } from "antd";
 const { TextArea } = Input;
 import { getStore } from "@/api/stores/getStore";
 import { updateStore } from "@/api/stores/updateStore";
-import { type Store, type StorePayload } from "@/types/stores";
 import { useContext, useEffect } from "react";
 import { HeaderContext } from "@/layouts/HeaderContext";
 
@@ -54,12 +53,12 @@ function edit() {
   }, []);
 
   const filterStoreData = {
-    address: storeData.address,
-    deliveryAvailable: storeData.deliveryAvailable,
-    deliveryMinimum: String(storeData.deliveryMinimum ?? ""),
-    description: storeData.description,
-    name: storeData.name,
-    phone: String(storeData.phone ?? ""),
+    address: storeData?.address,
+    deliveryAvailable: storeData?.deliveryAvailable,
+    deliveryMinimum: String(storeData?.deliveryMinimum ?? ""),
+    description: storeData?.description,
+    name: storeData?.name,
+    phone: String(storeData?.phone ?? ""),
   };
 
   const {
@@ -73,7 +72,7 @@ function edit() {
 
   const submitForm = async (data: EditInputs) => {
     // 組合要給後端的資料
-    const payload: StorePayload = {
+    const payload = {
       name: data.name,
       description: data.description,
       phone: data.phone,

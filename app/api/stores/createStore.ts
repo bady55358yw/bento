@@ -1,7 +1,16 @@
-import { type StorePayload } from "@/types/stores";
 import { API_BASE_URL } from "@/api/config";
 
-export const createStore = async (storeData: StorePayload) => {
+export type CreateStorePayload = {
+  name: string;
+  description: string;
+  phone: string;
+  address: string;
+  deliveryAvailable: boolean;
+  deliveryFee: number;
+  deliveryMinimum: number;
+};
+
+export const createStore = async (storeData: CreateStorePayload) => {
   try {
     const res = await fetch(`${API_BASE_URL}/stores`, {
       method: "POST",
@@ -21,7 +30,7 @@ export const createStore = async (storeData: StorePayload) => {
     }
 
     // 處理成功 response
-    const data = await res.json();
+    const data = (await res.json()) as string;
     return data;
   } catch (err) {
     // 處理例外錯誤

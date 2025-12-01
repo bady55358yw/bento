@@ -1,9 +1,9 @@
-import { Link } from "react-router";
-import { Tag, Button, Modal } from "antd";
-import { type Store } from "@/types/stores";
-import Ebike from "@/assets/icon-ebike.svg?react";
 import { deleteStore } from "@/api/stores/deleteStore";
+import type { Store } from "@/api/stores/getStore";
+import Ebike from "@/assets/icon-ebike.svg?react";
 import { CloseOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { Button, Modal } from "antd";
+import { Link } from "react-router";
 
 type StoreCardProps = {
   store: Store;

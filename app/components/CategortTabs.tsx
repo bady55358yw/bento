@@ -1,7 +1,4 @@
-import {
-  EditOutlined,
-  ExclamationCircleOutlined
-} from "@ant-design/icons";
+import { EditOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { Input, Modal, Tabs } from "antd";
 import React, { useEffect, useState } from "react";
 
@@ -9,20 +6,15 @@ import { createCategory } from "@/api/category/createCategory";
 import { deleteCategory } from "@/api/category/deleteCategory";
 import { updateCategory } from "@/api/category/updateCategory";
 import Products from "@/components/Products/";
-
-import type {
-  CategoryResponse,
-  CreateCategoryPayload,
-  UpdateCategoryPayload,
-} from "@/types/category";
+import type { Categories } from "@/api/category/getCategoryList";
 
 type CategoryProps = {
   storeId: string;
-  categoryListData: CategoryResponse;
+  categoryListData: Categories;
 };
 type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
 
-function Category({ storeId, categoryListData }: CategoryProps) {
+function CategortTabs({ storeId, categoryListData }: CategoryProps) {
   const [categories, setCategories] = useState<any[]>([]);
   const [categoryName, setCategoryName] = useState<string>("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
@@ -81,13 +73,13 @@ function Category({ storeId, categoryListData }: CategoryProps) {
       return;
     }
 
-    const payload: CreateCategoryPayload = {
+    const payload = {
       title: categoryName,
     };
 
-    const categoryListData = await createCategory(storeId, payload);
+    const newCategoryId = await createCategory(storeId, payload);
 
-    if (categoryListData) {
+    if (newCategoryId) {
       const newCategory = {
         label: (
           <span className="flex items-center gap-4">
@@ -104,12 +96,12 @@ function Category({ storeId, categoryListData }: CategoryProps) {
           </span>
         ), // 類別名稱
         title: categoryName,
-        key: categoryListData._id, // 類別唯一值
-        children: <Products categoryId={categoryListData._id} />, // 類別內容
+        key: newCategoryId, // 類別唯一值
+        children: <Products categoryId={newCategoryId} />, // 類別內容
       };
 
       setCategories((prev) => [...prev, newCategory]);
-      setActiveCategory(categoryListData._id);
+      setActiveCategory(newCategoryId);
       setIsAddModalOpen(false);
     }
   };
@@ -121,7 +113,7 @@ function Category({ storeId, categoryListData }: CategoryProps) {
       return;
     }
 
-    const payload: UpdateCategoryPayload = {
+    const payload = {
       title: categoryName,
     };
 
@@ -273,4 +265,4 @@ function Category({ storeId, categoryListData }: CategoryProps) {
   );
 }
 
-export default Category;
+export default CategortTabs;

@@ -3,19 +3,18 @@ import { Button } from "antd";
 import { useContext, useEffect } from "react";
 import { Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/index";
-import type { Products } from '@/types/product'
 
 import { getCategoryList } from "@/api/category/getCategoryList";
 import { getProductList } from "@/api/product/getProductList";
 import { getStore } from "@/api/stores/getStore";
 import { HeaderContext } from "@/layouts/HeaderContext";
-import Category from "@components/Category";
+import CategortTabs from "@/components/CategortTabs";
 import StoreCard from "@components/StoreCard";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const storeData = await getStore(params.storeId);
   const categoryListData = await getCategoryList(params.storeId);
-  const productListData: Products  = await getProductList(params.storeId)
+  const productListData = await getProductList(params.storeId);
   return { storeData, categoryListData, productListData };
 }
 
@@ -42,12 +41,23 @@ function index() {
 
       <div className="flex-1 flex flex-col lg:flex-row gap-x-8 w-full h-full gap-y-8">
         <div>
-          <StoreCard store={storeData} hasAction={false} />
+          {storeData ? (
+            <StoreCard store={storeData} hasAction={false} />
+          ) : (
+            "無法取得店家資料"
+          )}
         </div>
 
         <div className="flex-1 flex flex-col min-w-0">
           {/* 類別 */}
-          <Category storeId={storeData._id} categoryListData={categoryListData} />
+          {storeData && categoryListData ? (
+            <CategortTabs
+              storeId={storeData._id}
+              categoryListData={categoryListData}
+            />
+          ) : (
+            "無法取得類別資料"
+          )}
         </div>
       </div>
     </div>

@@ -1,4 +1,11 @@
 import { API_BASE_URL } from "@/api/config";
+import type { Store } from "./getStore";
+
+export type Stores = {
+  page: Store[];
+  continueCursor: string;
+  isDone: boolean;
+};
 
 export const getStoreList = async () => {
   try {
@@ -12,7 +19,7 @@ export const getStoreList = async () => {
       return null;
     }
 
-    const data = await res.json();
+    const data = (await res.json()) as Stores;
     return data;
   } catch (err) {
     console.error(err);

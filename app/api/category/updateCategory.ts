@@ -1,5 +1,8 @@
 import { API_BASE_URL } from "@/api/config";
-import type { UpdateCategoryPayload } from "@/types/category";
+
+export type UpdateCategoryPayload = {
+  title: string;
+};
 
 export const updateCategory = async (
   storeId: string,

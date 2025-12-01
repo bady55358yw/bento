@@ -1,10 +1,22 @@
 import { API_BASE_URL } from "@/api/config";
 
+export type Product = {
+  id: string;
+  categoryId: string;
+  name: string;
+  price: number;
+  notes: string;
+  isVegetarian: boolean;
+};
+
+export type Products = {
+  total: number;
+  products: Product[];
+};
+
 export const getProductList = async (storeId: string) => {
   try {
-    const res = await fetch(
-      `${API_BASE_URL}/stores/${storeId}/products`
-    );
+    const res = await fetch(`${API_BASE_URL}/stores/${storeId}/products`);
 
     if (!res.ok) {
       const errorText = await res.json();
@@ -14,7 +26,7 @@ export const getProductList = async (storeId: string) => {
       return null;
     }
 
-    const data = await res.json();
+    const data = (await res.json()) as Products;
     return data;
   } catch (err) {
     console.error(err);
