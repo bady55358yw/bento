@@ -1,8 +1,12 @@
 import productImage01 from "@/assets/product-01.png";
-import type { Product } from "@/types/product";
 import IconLeaf from "@/assets/icon-leaf.svg?react";
+import type { Product } from "@/api/product/getProductList";
 
-function ProductCard({ product }: { product: Product }) {
+type ProductCardProps = {
+  product: Product;
+};
+
+function ProductCard({ product }: ProductCardProps) {
   return (
     <>
       <div className="flex flex-col min-w-[142px] w-full h-[220px] drop-shadow-sm">
@@ -28,7 +32,9 @@ function ProductCard({ product }: { product: Product }) {
             {product.name}
           </p>
           {/* price */}
-          <p className="text-colorText text-sm font-semibold">${new Intl.NumberFormat("zh-TW").format(product.price)}</p>
+          <p className="text-colorText text-sm font-semibold">
+            ${new Intl.NumberFormat("zh-TW").format(product.price)}
+          </p>
         </div>
       </div>
     </>

@@ -51,7 +51,7 @@ function CategortTabs({ storeId, categoryListData }: CategoryProps) {
         title: c.title,
         key: c._id, // 類別唯一值
         // 類別內容
-        children: <Products categoryId={c._id} />,
+        children: <Products categoryId={c._id} storeId={storeId} />,
       }));
 
       setCategories(mapCategories);
@@ -97,7 +97,7 @@ function CategortTabs({ storeId, categoryListData }: CategoryProps) {
         ), // 類別名稱
         title: categoryName,
         key: newCategoryId, // 類別唯一值
-        children: <Products categoryId={newCategoryId} />, // 類別內容
+        children: <Products categoryId={newCategoryId} storeId={storeId}/>, // 類別內容
       };
 
       setCategories((prev) => [...prev, newCategory]);
