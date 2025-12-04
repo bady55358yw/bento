@@ -4,6 +4,10 @@ export type CreateCategoryPayload = {
   title: string;
 };
 
+type ResponseData = {
+  _id: string;
+};
+
 export const createCategory = async (
   storeId: string,
   payload: CreateCategoryPayload
@@ -30,7 +34,7 @@ export const createCategory = async (
     }
 
     // 處理成功 response
-    const data = (await res.json()) as string;
+    const data = (await res.json()) as ResponseData;
     return data;
   } catch (err) {
     // 處理例外錯誤

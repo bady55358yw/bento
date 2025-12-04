@@ -8,7 +8,7 @@ import { getCategoryList } from "@/api/category/getCategoryList";
 import { getProductList } from "@/api/product/getProductList";
 import { getStore } from "@/api/stores/getStore";
 import { HeaderContext } from "@/layouts/HeaderContext";
-import CategortTabs from "@/components/CategortTabs";
+import CategoryTabs from "@/components/CategoryTabs";
 import StoreCard from "@components/StoreCard";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
@@ -51,10 +51,7 @@ function index() {
         <div className="flex-1 flex flex-col min-w-0">
           {/* 類別 */}
           {storeData && categoryListData ? (
-            <CategortTabs
-              storeId={storeData._id}
-              categoryListData={categoryListData}
-            />
+            <CategoryTabs storeId={storeData._id} />
           ) : (
             "無法取得類別資料"
           )}
