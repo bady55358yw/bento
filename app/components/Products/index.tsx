@@ -1,14 +1,14 @@
-import { PlusOutlined } from "@ant-design/icons";
-import { Button, Input, Modal, Form, Checkbox } from "antd";
-import ProductCard from "./ProductCard";
-import { useLoaderData, useRevalidator } from "react-router";
-import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import type { Products } from "@/api/product/getProductList";
 import { createProduct } from "@/api/product/createProduct";
+import type { Products } from "@/api/product/getProductList";
+import { PlusOutlined } from "@ant-design/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { Button, Checkbox, Form, Input, Modal } from "antd";
 import TextArea from "antd/es/input/TextArea";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useLoaderData, useRevalidator } from "react-router";
+import * as z from "zod";
+import ProductCard from "./ProductCard";
 
 type ProductsProps = {
   categoryId: string;
@@ -28,8 +28,12 @@ const createProductSchema = z.object({
 type CreateInputs = z.infer<typeof createProductSchema>;
 
 function index({ categoryId, storeId }: ProductsProps) {
-  const { productListData }: { productListData: Products } = useLoaderData();
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+   // modal 控制
+  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+
+  const { productListData }: { productListData: Products }
+   = useLoaderData();
+  
   const revalidator = useRevalidator();
 
   // 篩選出對應該類別的所有商品
@@ -52,7 +56,7 @@ function index({ categoryId, storeId }: ProductsProps) {
     },
   });
 
-  const submitForm = async (data: CreateInputs) => {
+  const handleCreateProduct = async (data: CreateInputs) => {
     // 組合要給後端的資料
     const payload = {
       categoryId: categoryId,
@@ -81,14 +85,14 @@ function index({ categoryId, storeId }: ProductsProps) {
         <PlusOutlined className="flex! items-center! justify-center! text-2xl" />
       </Button>
       {matchProducts.map((product) => (
-        <ProductCard key={product.id} product={product} />
+        <ProductCard key={product.id} storeId={storeId} product={product} />
       ))}
 
       {/* 新增商品的彈窗 */}
       <Modal
         open={isAddModalOpen}
         title="新增商品"
-        onOk={handleSubmit(submitForm)}
+        onOk={handleSubmit(handleCreateProduct)}
         onCancel={() => setIsAddModalOpen(false)}
         okText="新增"
         cancelText="取消"

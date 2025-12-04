@@ -1,13 +1,5 @@
 import { API_BASE_URL } from "@/api/config";
-
-export type Product = {
-  id: string;
-  categoryId: string;
-  name: string;
-  price: number;
-  notes: string;
-  isVegetarian: boolean;
-};
+import type { Product } from "@/api/product/getProduct";
 
 export type Products = {
   total: number;
