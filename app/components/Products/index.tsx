@@ -6,7 +6,7 @@ import { Button, Checkbox, Form, Input, Modal } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useLoaderData, useRevalidator } from "react-router";
+import { useAsyncValue, useLoaderData, useRevalidator } from "react-router";
 import * as z from "zod";
 import ProductCard from "./ProductCard";
 
@@ -28,12 +28,11 @@ const createProductSchema = z.object({
 type CreateInputs = z.infer<typeof createProductSchema>;
 
 function index({ categoryId, storeId }: ProductsProps) {
-   // modal 控制
+  // modal 控制
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
 
-  const { productListData }: { productListData: Products }
-   = useLoaderData();
-  
+  const [, , productListData] = useAsyncValue() as [unknown, unknown, Products];
+
   const revalidator = useRevalidator();
 
   // 篩選出對應該類別的所有商品
@@ -45,7 +44,7 @@ function index({ categoryId, storeId }: ProductsProps) {
     control,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
   } = useForm<CreateInputs>({
     resolver: zodResolver(createProductSchema),
     defaultValues: {

@@ -7,7 +7,7 @@ import { deleteCategory } from "@/api/category/deleteCategory";
 import { updateCategory } from "@/api/category/updateCategory";
 import Products from "@/components/Products/";
 import type { Categories } from "@/api/category/getCategoryList";
-import { useLoaderData, useRevalidator } from "react-router";
+import { useAsyncValue, useLoaderData, useRevalidator } from "react-router";
 
 type CategoryProps = {
   storeId: string;
@@ -35,8 +35,8 @@ function CategoryTabs({ storeId }: CategoryProps) {
   const [modal, contextHolder] = Modal.useModal();
 
   // 從 loader 拿到類別資料
-  const { categoryListData }: { categoryListData: Categories } =
-    useLoaderData();
+  const [, categoryListData] = useAsyncValue() as [unknown, Categories];
+
   const categoryList =
     categoryListData.page.length > 0 ? categoryListData.page : [];
 

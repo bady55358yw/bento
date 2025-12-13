@@ -1,7 +1,7 @@
 import { SwapRightOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import { useContext, useEffect } from "react";
-import { Link, useLoaderData } from "react-router";
+import { Suspense, useContext, useEffect } from "react";
+import { Await, Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/index";
 
 import { getCategoryList } from "@/api/category/getCategoryList";
@@ -10,16 +10,19 @@ import { getStore } from "@/api/stores/getStore";
 import { HeaderContext } from "@/layouts/HeaderContext";
 import CategoryTabs from "@/components/CategoryTabs";
 import StoreCard from "@components/StoreCard";
+import Loading from "@/components/Loading";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const storeData = await getStore(params.storeId);
-  const categoryListData = await getCategoryList(params.storeId);
-  const productListData = await getProductList(params.storeId);
-  return { storeData, categoryListData, productListData };
+  return {
+    storeData: getStore(params.storeId),
+    categoryListData: getCategoryList(params.storeId),
+    productListData: getProductList(params.storeId),
+  };
 }
 
 function index() {
-  const { storeData, categoryListData } = useLoaderData<typeof clientLoader>();
+  const { storeData, categoryListData, productListData } =
+    useLoaderData<typeof clientLoader>();
   const { setHeaderMode } = useContext(HeaderContext);
 
   // 設置不顯示 Header
@@ -39,24 +42,32 @@ function index() {
         </Link>
       </div>
 
-      <div className="flex-1 flex flex-col lg:flex-row gap-x-8 w-full h-full gap-y-8">
-        <div>
-          {storeData ? (
-            <StoreCard store={storeData} hasAction={false} />
-          ) : (
-            "無法取得店家資料"
-          )}
-        </div>
+      <Suspense fallback={<Loading />}>
+        <Await
+          resolve={Promise.all([storeData, categoryListData, productListData])}
+        >
+          {([storeData, categoryListData, productListData]) => (
+            <div className="flex-1 flex flex-col lg:flex-row gap-x-8 w-full h-full gap-y-8">
+              <div>
+                {storeData ? (
+                  <StoreCard store={storeData} hasAction={false} />
+                ) : (
+                  "無法取得店家資料"
+                )}
+              </div>
 
-        <div className="flex-1 flex flex-col min-w-0">
-          {/* 類別 */}
-          {storeData && categoryListData ? (
-            <CategoryTabs storeId={storeData._id} />
-          ) : (
-            "無法取得類別資料"
+              <div className="flex-1 flex flex-col min-w-0">
+                {/* 類別 */}
+                {storeData && categoryListData ? (
+                  <CategoryTabs storeId={storeData._id} />
+                ) : (
+                  "無法取得類別資料"
+                )}
+              </div>
+            </div>
           )}
-        </div>
-      </div>
+        </Await>
+      </Suspense>
     </div>
   );
 }
