@@ -68,14 +68,15 @@ function StoreCard({ store, hasAction = true }: StoreCardProps) {
       <div className="text-xs space-y-1.5">
         <div className="flex items-center justify-between text-colorTextSecondary">
           <p>{store?.phone}</p>
-          {store?.deliveryMinimum !== 0 ? (
-            <div className="flex items-center">
-              <Ebike className="w-4.5 h-4.5 text-colorPrimary/60!" />
-              <p className="text-colorText">{`最少 ${store?.deliveryMinimum}`}</p>
-            </div>
-          ) : (
-            ""
-          )}
+
+          <div className="flex items-center">
+            <Ebike className="w-4.5 h-4.5 text-colorPrimary/60!" />
+            <p className="text-colorText">
+              {store.deliveryAvailable && store.deliveryMinimum
+                ? `最少 ${store.deliveryMinimum}`
+                : "不提供外送"}
+            </p>
+          </div>
         </div>
         <p className="text-colorTextTertiary">{store?.address}</p>
       </div>
