@@ -29,7 +29,7 @@ type CreateInputs = z.infer<typeof createProductSchema>;
 
 function index({ categoryId, storeId }: ProductsProps) {
   // modal 控制
-  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const [, , productListData] = useAsyncValue() as [unknown, unknown, Products];
 

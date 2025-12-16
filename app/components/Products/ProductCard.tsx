@@ -37,7 +37,7 @@ function ProductCard({ storeId, product }: ProductCardProps) {
   const revalidator = useRevalidator();
 
   // modal 控制
-  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   // Ant Design 的 Modal.useModal() 用
   const [modal, contextHolder] = Modal.useModal();

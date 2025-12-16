@@ -18,18 +18,18 @@ function CategoryTabs({ storeId }: CategoryProps) {
   const revalidator = useRevalidator();
 
   // 共用欄位
-  const [categoryName, setCategoryName] = useState<string>("");
-  const [errorMsg, setErrorMsg] = useState<string>("");
+  const [categoryName, setCategoryName] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   // active tab
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   // modal 控制
-  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   // 編輯類別用
-  const [editingCategoryId, setEditingCategoryId] = useState<string>("");
+  const [editingCategoryId, setEditingCategoryId] = useState("");
 
   // Ant Design 的 Modal.useModal() 用
   const [modal, contextHolder] = Modal.useModal();
