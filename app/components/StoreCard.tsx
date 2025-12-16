@@ -4,6 +4,7 @@ import Ebike from "@/assets/icon-ebike.svg?react";
 import { CloseOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { Button, Modal } from "antd";
 import { Link, useRevalidator } from "react-router";
+import clsx from "clsx";
 
 type StoreCardProps = {
   store: Store;
@@ -34,7 +35,10 @@ function StoreCard({ store, hasAction = true }: StoreCardProps) {
 
   return (
     <div
-      className={`flex flex-col min-w-[260px] w-full ${hasAction === false ? "h-full" : "h-[280px]"} lg:h-[280px] bg-white border border-colorBorder rounded-2xl p-4 gap-y-3`}
+      className={clsx(
+        "flex flex-col min-w-[260px] w-ful lg:h-[280px] bg-white border border-colorBorder rounded-2xl p-4 gap-y-3",
+        hasAction === false ? "h-full" : "h-[280px]"
+      )}
     >
       {/* Store Name & Opening Time */}
       <div className="space-y-1">
