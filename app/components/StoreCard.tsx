@@ -3,7 +3,7 @@ import type { Store } from "@/api/stores/getStore";
 import Ebike from "@/assets/icon-ebike.svg?react";
 import { CloseOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { Button, Modal } from "antd";
-import { Link } from "react-router";
+import { Link, useRevalidator } from "react-router";
 
 type StoreCardProps = {
   store: Store;
@@ -12,6 +12,7 @@ type StoreCardProps = {
 
 function StoreCard({ store, hasAction = true }: StoreCardProps) {
   const [modal, contextHolder] = Modal.useModal();
+  const revalidator = useRevalidator();
 
   const handleDelete = () => {
     modal.confirm({
@@ -24,7 +25,8 @@ function StoreCard({ store, hasAction = true }: StoreCardProps) {
       onOk: async () => {
         const isDeleteSuccessed = await deleteStore(store._id);
         if (isDeleteSuccessed) {
-          window.location.reload();
+          // 觸發 loader 重新抓資料 re-render
+          revalidator.revalidate();
         }
       },
     });
