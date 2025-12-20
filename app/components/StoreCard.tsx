@@ -18,7 +18,7 @@ function StoreCard({ store, hasAction = true }: StoreCardProps) {
   const handleDelete = () => {
     modal.confirm({
       title: "確定要刪除店家？",
-      content: `「${store?.name}」將會被永久刪除，無法復原。`,
+      content: `「${store.name}」將會被永久刪除，無法復原。`,
       okText: "刪除",
       okType: "danger",
       cancelText: "取消",
@@ -43,7 +43,7 @@ function StoreCard({ store, hasAction = true }: StoreCardProps) {
       {/* Store Name & Opening Time */}
       <div className="space-y-1">
         <div className="flex items-center justify-between">
-          <h3 className="text-colorText text-xl font-medium">{store?.name}</h3>
+          <h3 className="text-colorText text-xl font-medium">{store.name}</h3>
 
           <div className="flex flex-col">
             {hasAction && (
@@ -67,13 +67,13 @@ function StoreCard({ store, hasAction = true }: StoreCardProps) {
 
       {/* Store Description */}
       <div className="flex-1 text-colorTextTertiary h-full text-base">
-        {store?.description}
+        {store.description}
       </div>
 
       {/* Store Info */}
       <div className="text-xs space-y-1.5">
         <div className="flex items-center justify-between text-colorTextSecondary">
-          <p>{store?.phone}</p>
+          <p>{store.phone}</p>
 
           <div className="flex items-center">
             <Ebike className="w-4.5 h-4.5 text-colorPrimary/60!" />
@@ -84,7 +84,7 @@ function StoreCard({ store, hasAction = true }: StoreCardProps) {
             </p>
           </div>
         </div>
-        <p className="text-colorTextTertiary">{store?.address}</p>
+        <p className="text-colorTextTertiary">{store.address}</p>
       </div>
 
       {/* Action */}

@@ -4,7 +4,7 @@ import { WithHeaderEffect } from "@/layouts/BaseLayout/BaseLayout";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Checkbox, Form, Input } from "antd";
 import { Controller, useForm } from "react-hook-form";
-import { Link, useLoaderData, useNavigate } from "react-router";
+import { Link, redirect, useLoaderData, useNavigate } from "react-router";
 import * as z from "zod";
 import type { Route } from "./+types/edit";
 const { TextArea } = Input;
@@ -38,6 +38,13 @@ type EditInputs = z.infer<typeof editSchema>;
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const storeData = await getStore(params.storeId);
+
+  // 先在 loader 就確認 storeData 是否存在，不存在導回店家列表頁
+  // => default component 就可以安心處理 UI，因爲傳到 component 一定有資料
+  if (!storeData) {
+    throw redirect('/stores')
+  }
+
   return { storeData: storeData, storeId: params.storeId };
 }
 
@@ -46,12 +53,12 @@ function edit() {
   const { storeData, storeId } = useLoaderData<typeof clientLoader>();
 
   const filterStoreData = {
-    address: storeData?.address,
-    deliveryAvailable: storeData?.deliveryAvailable,
-    deliveryMinimum: String(storeData?.deliveryMinimum ?? ""),
-    description: storeData?.description,
-    name: storeData?.name,
-    phone: String(storeData?.phone ?? ""),
+    address: storeData.address,
+    deliveryAvailable: storeData.deliveryAvailable,
+    deliveryMinimum: String(storeData.deliveryMinimum ?? ""),
+    description: storeData.description,
+    name: storeData.name,
+    phone: String(storeData.phone ?? ""),
   };
 
   const {

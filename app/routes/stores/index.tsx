@@ -47,22 +47,32 @@ function stores() {
 
         <Suspense fallback={<Loading />}>
           <Await resolve={storeListData}>
-            {(storeListData) => (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <Link to="/stores/new/step-1" className="flex flex-col">
-                  <Button
-                    type="dashed"
-                    className="h-[276px]! rounded-2xl! text-colorTextTertiary! hover:text-colorPrimaryHover!"
-                  >
-                    <PlusOutlined className="flex! items-center! justify-center! text-2xl" />
-                  </Button>
-                </Link>
+            {(storeListData) => {
+              if (!storeListData || storeListData.page.length === 0) {
+                return (
+                  <div className="text-center text-gray-400">
+                    尚未建立任何店家
+                  </div>
+                );
+              }
 
-                {storeListData?.page?.map((store) => (
-                  <StoreCard key={store._id} store={store} />
-                ))}
-              </div>
-            )}
+              return (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  <Link to="/stores/new/step-1" className="flex flex-col">
+                    <Button
+                      type="dashed"
+                      className="h-[276px]! rounded-2xl! text-colorTextTertiary! hover:text-colorPrimaryHover!"
+                    >
+                      <PlusOutlined className="flex! items-center! justify-center! text-2xl" />
+                    </Button>
+                  </Link>
+
+                  {storeListData.page.map((store) => (
+                    <StoreCard key={store._id} store={store} />
+                  ))}
+                </div>
+              );
+            }}
           </Await>
         </Suspense>
       </div>
