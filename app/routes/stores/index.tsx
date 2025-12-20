@@ -31,15 +31,18 @@ function stores() {
       <div className="space-y-8 ">
         <div className="flex items-center justify-between">
           <h2 className="text-gray-800 text-2xl font-medium">店家列表</h2>
-          <Button
-            onClick={handleSeed}
-            color="danger"
-            variant="text"
-            size="small"
-          >
-            <ClearOutlined />
-            重置
-          </Button>
+
+          {import.meta.env.DEV && (
+            <Button
+              onClick={handleSeed}
+              color="danger"
+              variant="text"
+              size="small"
+            >
+              <ClearOutlined />
+              重置
+            </Button>
+          )}
         </div>
 
         <Suspense fallback={<Loading />}>
