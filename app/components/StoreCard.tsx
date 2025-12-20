@@ -36,8 +36,8 @@ function StoreCard({ store, hasAction = true }: StoreCardProps) {
   return (
     <div
       className={clsx(
-        "flex flex-col min-w-[260px] w-ful lg:h-[280px] bg-white border border-colorBorder rounded-2xl p-4 gap-y-3",
-        hasAction === false ? "h-full" : "h-[280px]"
+        "flex flex-col w-full lg:h-[280px] bg-white border border-colorBorder rounded-2xl p-4 gap-y-3",
+        hasAction === false ? "h-full lg:w-[260px]" : "h-[280px]"
       )}
     >
       {/* Store Name & Opening Time */}
@@ -66,8 +66,15 @@ function StoreCard({ store, hasAction = true }: StoreCardProps) {
       </div>
 
       {/* Store Description */}
-      <div className="flex-1 text-colorTextTertiary h-full text-base">
-        {store.description}
+      <div className="flex-1  min-h-0 overflow-hidden">
+        <p
+          className={clsx(
+            "text-colorTextTertiary text-base",
+            hasAction === false ? "line-clamp-6" : "line-clamp-4"
+          )}
+        >
+          {store.description}
+        </p>
       </div>
 
       {/* Store Info */}

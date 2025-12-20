@@ -91,7 +91,7 @@ function edit() {
 
   return (
     <WithHeaderEffect mode="none">
-      <div className="flex flex-col items-center w-full h-full gap-4">
+      <div className="flex flex-col items-center w-full md:h-full gap-4">
         <h1 className="text-3xl text-colorText my-6">修改店家資料</h1>
 
         <form
@@ -99,8 +99,8 @@ function edit() {
           className="flex flex-col items-center justify-between w-full h-full gap-6"
         >
           <div className="flex flex-col gap-y-2 w-full max-w-[640px]">
-            <div className="flex justify-between items-start w-full">
-              <h2 className="w-[260px] text-4xl text-colorTextQuaternary font-semibold">
+            <div className="flex flex-col md:flex-row justify-between w-full gap-y-8">
+              <h2 className="w-[260px] text-3xl md:text-4xl text-colorTextQuaternary font-semibold">
                 基本
               </h2>
 
@@ -164,8 +164,8 @@ function edit() {
 
             <span className="block w-full border-b border-colorBorder my-4"></span>
 
-            <div className="flex justify-between items-start w-full">
-              <h2 className="w-[260px] text-4xl text-colorTextQuaternary font-semibold">
+            <div className="flex flex-col md:flex-row justify-between w-full gap-y-8">
+              <h2 className="w-[260px] text-3xl md:text-4xl text-colorTextQuaternary font-semibold">
                 其他
               </h2>
 
