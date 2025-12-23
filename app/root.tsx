@@ -7,7 +7,6 @@ import {
   ScrollRestoration,
 } from "react-router";
 import type { Route } from "./+types/root";
-import "@ant-design/v5-patch-for-react-19";
 import { Button, ConfigProvider } from "antd";
 import "./app.css";
 
