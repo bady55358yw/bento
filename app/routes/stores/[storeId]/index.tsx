@@ -12,16 +12,17 @@ import { WithHeaderEffect } from "@/layouts/BaseLayout/BaseLayout";
 import StoreCard from "@components/StoreCard";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  return {
-    storeData: getStore(params.storeId),
-    categoryListData: getCategoryList(params.storeId),
-    productListData: getProductList(params.storeId),
-  };
+  const promiseDatas = Promise.all([
+    getStore(params.storeId),
+    getCategoryList(params.storeId),
+    getProductList(params.storeId),
+  ]);
+
+  return { promiseDatas };
 }
 
 function index() {
-  const { storeData, categoryListData, productListData } =
-    useLoaderData<typeof clientLoader>();
+  const { promiseDatas } = useLoaderData<typeof clientLoader>();
 
   return (
     <WithHeaderEffect mode="none">
@@ -37,13 +38,7 @@ function index() {
         </div>
 
         <Suspense fallback={<Loading />}>
-          <Await
-            resolve={Promise.all([
-              storeData,
-              categoryListData,
-              productListData,
-            ])}
-          >
+          <Await resolve={promiseDatas}>
             {([storeData, categoryListData, productListData]) => (
               <div className="flex-1 flex flex-col lg:flex-row gap-x-8 w-full h-full gap-y-8">
                 <div>
