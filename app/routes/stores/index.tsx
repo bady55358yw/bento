@@ -9,12 +9,12 @@ import { Suspense } from "react";
 import { Await, Link, useLoaderData, useRevalidator } from "react-router";
 
 export async function clientLoader() {
-  const storeListData = getStoreList();
-  return { storeListData };
+  const storeListPromise = getStoreList();
+  return { storeListPromise };
 }
 
 function stores() {
-  const { storeListData } = useLoaderData<typeof clientLoader>();
+  const { storeListPromise } = useLoaderData<typeof clientLoader>();
 
   const revalidator = useRevalidator();
   const handleSeed = async () => {
@@ -46,7 +46,7 @@ function stores() {
         </div>
 
         <Suspense fallback={<Loading />}>
-          <Await resolve={storeListData}>
+          <Await resolve={storeListPromise}>
             {(storeListData) => {
               if (!storeListData || storeListData.page.length === 0) {
                 return (

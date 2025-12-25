@@ -1,28 +1,31 @@
-import { SwapRightOutlined } from "@ant-design/icons";
-import { Button } from "antd";
-import { Suspense } from "react";
-import { Await, Link, useLoaderData } from "react-router";
-import type { Route } from "./+types/index";
-import { getCategoryList } from "@/api/category/getCategoryList";
+import {
+  getCategoryList
+} from "@/api/category/getCategoryList";
 import { getProductList } from "@/api/product/getProductList";
 import { getStore } from "@/api/stores/getStore";
 import CategoryTabs from "@/components/CategoryTabs";
 import Loading from "@/components/Loading";
 import { WithHeaderEffect } from "@/layouts/BaseLayout/BaseLayout";
+import { SwapRightOutlined } from "@ant-design/icons";
 import StoreCard from "@components/StoreCard";
+import { Button } from "antd";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { Await, Link, useLoaderData } from "react-router";
+import type { Route } from "./+types/index";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const promiseDatas = Promise.all([
-    getStore(params.storeId),
-    getCategoryList(params.storeId),
-    getProductList(params.storeId),
-  ]);
+  const storePromise = getStore(params.storeId);
+  const categoryListPromise = getCategoryList(params.storeId);
+  const productListPromise = getProductList(params.storeId);
 
-  return { promiseDatas };
+  return { storePromise, categoryListPromise, productListPromise };
 }
 
 function index() {
-  const { promiseDatas } = useLoaderData<typeof clientLoader>();
+  const { storePromise } = useLoaderData<typeof clientLoader>();
+  const { categoryListPromise } = useLoaderData<typeof clientLoader>();
+  const { productListPromise } = useLoaderData<typeof clientLoader>();
 
   return (
     <WithHeaderEffect mode="none">
@@ -37,30 +40,43 @@ function index() {
           </Link>
         </div>
 
-        <Suspense fallback={<Loading />}>
-          <Await resolve={promiseDatas}>
-            {([storeData, categoryListData, productListData]) => (
-              <div className="flex-1 flex flex-col lg:flex-row gap-x-8 w-full h-full gap-y-8">
-                <div>
-                  {storeData ? (
-                    <StoreCard store={storeData} hasAction={false} />
-                  ) : (
-                    "無法取得店家資料"
-                  )}
-                </div>
+        <div className="flex-1 flex flex-col lg:flex-row gap-x-8 w-full h-full gap-y-8">
+          {/* 店家 */}
 
-                <div className="flex-1 flex flex-col min-w-0">
-                  {/* 類別 */}
-                  {storeData && categoryListData ? (
+          <ErrorBoundary
+            fallbackRender={({ error }) => <p>⚠️ {error.message} </p>}
+          >
+            <Suspense fallback={<Loading />}>
+              <Await resolve={storePromise}>
+                {(storeData) => (
+                  <div>
+                    <StoreCard store={storeData} hasAction={false} />
+                  </div>
+                )}
+              </Await>
+            </Suspense>
+          </ErrorBoundary>
+
+          <ErrorBoundary
+            fallbackRender={({ error }) => <p>⚠️ {error.message} </p>}
+          >
+            <Suspense fallback={<Loading />}>
+              <Await
+                resolve={Promise.all([
+                  storePromise,
+                  categoryListPromise,
+                  productListPromise,
+                ])}
+              >
+                {([storeData, categoryListData, productListData]) => (
+                  <div className="flex-1 flex flex-col min-w-0">
                     <CategoryTabs storeId={storeData._id} />
-                  ) : (
-                    "無法取得類別資料"
-                  )}
-                </div>
-              </div>
-            )}
-          </Await>
-        </Suspense>
+                  </div>
+                )}
+              </Await>
+            </Suspense>
+          </ErrorBoundary>
+        </div>
       </div>
     </WithHeaderEffect>
   );
