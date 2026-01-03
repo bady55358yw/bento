@@ -78,28 +78,39 @@ function step3() {
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-x-8 w-full">
-          <Link to="/stores/new/step-2">
-            <Button size="large" color="primary" variant="outlined">
-              上一步
-            </Button>
-          </Link>
+        <div className="flex flex-col items-center">
+          <div className="flex items-center justify-center gap-x-8 w-full">
+            <Link to="/stores/new/step-2">
+              <Button size="large" color="primary" variant="outlined">
+                上一步
+              </Button>
+            </Link>
 
-          <div className="hidden sm:flex gap-x-2">
-            <span className="block w-16 h-1 bg-colorBgSpotlight"></span>
-            <span className="block w-16 h-1 bg-colorBgSpotlight"></span>
-            <span className="block w-16 h-1 bg-colorBgSpotlight"></span>
+            <div className="hidden sm:flex gap-x-2">
+              <span className="block w-16 h-1 bg-colorBgSpotlight"></span>
+              <span className="block w-16 h-1 bg-colorBgSpotlight"></span>
+              <span className="block w-16 h-1 bg-colorBgSpotlight"></span>
+            </div>
+
+            <Button
+              onClick={submitForm}
+              size="large"
+              color="primary"
+              variant="solid"
+              className="w-[80px]"
+            >
+              新增
+            </Button>
           </div>
 
-          <Button
-            onClick={submitForm}
-            size="large"
-            color="primary"
-            variant="solid"
-            className="w-[80px]"
-          >
-            新增
-          </Button>
+          <div>
+            <Link to="/stores">
+              <Button size="large" color="primary" variant="link">
+                取消?
+              </Button>
+            </Link>
+            <span className="text-colorTextTertiary">回店家列表</span>
+          </div>
         </div>
       </div>
     </WithHeaderEffect>

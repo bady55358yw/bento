@@ -105,27 +105,38 @@ function step2() {
             </Form.Item>
           </div>
 
-          <div className="flex items-center justify-center gap-x-8 w-full">
-            <Link to="/stores/new/step-1">
-              <Button size="large" color="primary" variant="outlined">
-                上一步
-              </Button>
-            </Link>
+          <div className="flex flex-col items-center">
+            <div className="flex items-center justify-center gap-x-8 w-full">
+              <Link to="/stores/new/step-1">
+                <Button size="large" color="primary" variant="outlined">
+                  上一步
+                </Button>
+              </Link>
 
-            <div className="flex gap-x-2">
-              <span className="block w-16 h-1 bg-colorBgSpotlight"></span>
-              <span className="block w-16 h-1 bg-colorBgSpotlight"></span>
-              <span className="block w-16 h-1 bg-colorFill"></span>
+              <div className="flex gap-x-2">
+                <span className="block w-16 h-1 bg-colorBgSpotlight"></span>
+                <span className="block w-16 h-1 bg-colorBgSpotlight"></span>
+                <span className="block w-16 h-1 bg-colorFill"></span>
+              </div>
+
+              <Button
+                htmlType="submit"
+                size="large"
+                color="primary"
+                variant="solid"
+              >
+                下一步
+              </Button>
             </div>
 
-            <Button
-              htmlType="submit"
-              size="large"
-              color="primary"
-              variant="solid"
-            >
-              下一步
-            </Button>
+            <div>
+              <Link to="/stores">
+                <Button size="large" color="primary" variant="link">
+                  取消?
+                </Button>
+              </Link>
+              <span className="text-colorTextTertiary">回店家列表</span>
+            </div>
           </div>
         </form>
       </div>
