@@ -62,10 +62,18 @@ function stores() {
 state 的預設值就可以直接放 storeListRes */
 function StoreList({ storeListRes }: { storeListRes: StoreListRes }) {
   const [stores, setStores] = useState<Store[]>(storeListRes.page);
-  const [continueCursor, setContinueCursor] = useState<string>(storeListRes.continueCursor);
+  const [continueCursor, setContinueCursor] = useState<string>(
+    storeListRes.continueCursor
+  );
   const [isDone, setIsDone] = useState<boolean>(storeListRes.isDone);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setStores(storeListRes.page);
+    setContinueCursor(storeListRes.continueCursor);
+    setIsDone(storeListRes.isDone);
+  }, [storeListRes]);
 
   useEffect(() => {
     if (!loadMoreRef.current) return;

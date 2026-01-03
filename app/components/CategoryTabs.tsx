@@ -11,10 +11,12 @@ import { useAsyncValue, useLoaderData, useRevalidator } from "react-router";
 
 type CategoryProps = {
   storeId: string;
+  categoryListData: Categories
 };
 type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
 
-function CategoryTabs({ storeId }: CategoryProps) {
+function CategoryTabs({ storeId,categoryListData }: CategoryProps) {
+  // console.log(categoryListData)
   const revalidator = useRevalidator();
 
   // 共用欄位
@@ -35,7 +37,7 @@ function CategoryTabs({ storeId }: CategoryProps) {
   const [modal, contextHolder] = Modal.useModal();
 
   // 從 loader 拿到類別資料
-  const [, categoryListData] = useAsyncValue() as [unknown, Categories];
+  // const [, categoryListData] = useAsyncValue() as [unknown, Categories];
 
   const categoryList =
     categoryListData.page.length > 0 ? categoryListData.page : [];

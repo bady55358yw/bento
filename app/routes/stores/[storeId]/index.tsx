@@ -12,18 +12,20 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Await, Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/index";
 
+// Promise.all 要放在 loader，因爲 revalidator.revalidate() 會無法做自動更新
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const storePromise = getStore(params.storeId);
-  const categoryListPromise = getCategoryList(params.storeId);
-  const productListPromise = getProductList(params.storeId);
-
-  return { storePromise, categoryListPromise, productListPromise };
+  return {
+    dataPromise: Promise.all([
+      getStore(params.storeId),
+      getCategoryList(params.storeId),
+      getProductList(params.storeId),
+    ]),
+  };
 }
 
 function index() {
-  const { storePromise } = useLoaderData<typeof clientLoader>();
-  const { categoryListPromise } = useLoaderData<typeof clientLoader>();
-  const { productListPromise } = useLoaderData<typeof clientLoader>();
+  const { dataPromise } =
+    useLoaderData<typeof clientLoader>();
 
   return (
     <WithHeaderEffect mode="none">
@@ -44,8 +46,8 @@ function index() {
           <ErrorBoundary
             fallbackRender={({ error }) => <p>⚠️ {error.message} </p>}
           >
-            <Await resolve={storePromise}>
-              {(storeData) => (
+            <Await resolve={dataPromise}>
+              {([storeData, categoryListData, productListData]) => (
                 <div>
                   <StoreCard store={storeData} hasAction={false} />
                 </div>
@@ -58,17 +60,15 @@ function index() {
           >
             <Suspense fallback={<Loading />}>
               <Await
-                resolve={Promise.all([
-                  storePromise,
-                  categoryListPromise,
-                  productListPromise,
-                ])}
+                resolve={dataPromise}
               >
-                {([storeData, categoryListData, productListData]) => (
-                  <div className="flex-1 flex flex-col min-w-0">
-                    <CategoryTabs storeId={storeData._id} />
-                  </div>
-                )}
+                {([storeData, categoryListData, productListData]) => {
+                  return (
+                    <div className="flex-1 flex flex-col min-w-0">
+                      <CategoryTabs storeId={storeData._id} categoryListData={categoryListData} />
+                    </div>
+                  );
+                }}
               </Await>
             </Suspense>
           </ErrorBoundary>
