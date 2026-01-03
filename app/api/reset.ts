@@ -1,27 +1,33 @@
 import { API_BASE_URL } from "@/api/config";
 
 export const reset = async () => {
-  try {
-    const res = await fetch(`${API_BASE_URL}/seed`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        clear: true,
-      }),
-    });
+  // 指定 seed 個數
+  const res = await fetch(`${API_BASE_URL}/seed`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      storeCount: 40,
+      categoriesPerStore: 8,
+      productsPerCategory: 40,
+    }),
+  });
 
-    // 處理失敗 response
-    if (!res.ok) {
-      const errorText = await res.json();
-      console.error(errorText);
-      alert(`seed 類別失敗：${errorText.message}`);
-    }
+  // 清空新增的資料
+  // const res = await fetch(`${API_BASE_URL}/seed/reset`, {
+  //   method: "POST",
+  // });
 
-  } catch (err) {
-    // 處理例外錯誤
-    console.error(err);
-    alert("seed 類別失敗，請聯絡管理員");
+  if (res.status === 400) {
+    throw new Error("重置失敗(404) | 資料筆數過多，最多只能 16000 筆");
+  }
+
+  if (res.status === 403) {
+    throw new Error("重置失敗(403) | 目前無法使用此功能");
+  }
+
+  if (!res.ok) {
+    throw new Error("重置失敗（非預期錯誤，請聯絡後端）");
   }
 };

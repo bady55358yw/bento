@@ -1,6 +1,4 @@
-import {
-  getCategoryList
-} from "@/api/category/getCategoryList";
+import { getCategoryList } from "@/api/category/getCategoryList";
 import { getProductList } from "@/api/product/getProductList";
 import { getStore } from "@/api/stores/getStore";
 import CategoryTabs from "@/components/CategoryTabs";
@@ -46,15 +44,13 @@ function index() {
           <ErrorBoundary
             fallbackRender={({ error }) => <p>⚠️ {error.message} </p>}
           >
-            <Suspense fallback={<Loading />}>
-              <Await resolve={storePromise}>
-                {(storeData) => (
-                  <div>
-                    <StoreCard store={storeData} hasAction={false} />
-                  </div>
-                )}
-              </Await>
-            </Suspense>
+            <Await resolve={storePromise}>
+              {(storeData) => (
+                <div>
+                  <StoreCard store={storeData} hasAction={false} />
+                </div>
+              )}
+            </Await>
           </ErrorBoundary>
 
           <ErrorBoundary
