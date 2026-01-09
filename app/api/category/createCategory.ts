@@ -1,15 +1,28 @@
 import { API_BASE_URL } from "@/api/config";
-import type { CreateCategoryPayload } from "@/types/category";
 
-export const createCategory = async (storeId:string, payload:CreateCategoryPayload) => {
+export type CreateCategoryPayload = {
+  title: string;
+};
+
+type ResponseData = {
+  _id: string;
+};
+
+export const createCategory = async (
+  storeId: string,
+  payload: CreateCategoryPayload
+) => {
   try {
-    const res = await fetch(`${API_BASE_URL}/stores/${storeId}/product-categories`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+    const res = await fetch(
+      `${API_BASE_URL}/stores/${storeId}/product-categories`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    );
 
     // 處理失敗 response
     if (!res.ok) {
@@ -21,7 +34,7 @@ export const createCategory = async (storeId:string, payload:CreateCategoryPaylo
     }
 
     // 處理成功 response
-    const data = await res.json();
+    const data = (await res.json()) as ResponseData;
     return data;
   } catch (err) {
     // 處理例外錯誤

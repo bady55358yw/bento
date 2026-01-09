@@ -7,8 +7,7 @@ import {
   ScrollRestoration,
 } from "react-router";
 import type { Route } from "./+types/root";
-import "@ant-design/v5-patch-for-react-19";
-import { ConfigProvider } from "antd";
+import { Button, ConfigProvider } from "antd";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
@@ -46,6 +45,11 @@ const theme = {
   token: {
     colorPrimary: "#1677FF",
   },
+  components: {
+    Button: {
+      iconGap: 4,
+    }
+  }
 };
 
 export default function App() {

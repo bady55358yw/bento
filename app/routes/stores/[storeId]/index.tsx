@@ -1,45 +1,80 @@
 import { getCategoryList } from "@/api/category/getCategoryList";
+import { getProductList } from "@/api/product/getProductList";
 import { getStore } from "@/api/stores/getStore";
-import { SwapLeftOutlined } from "@ant-design/icons";
-import Category from "@components/Category";
+import CategoryTabs from "@/components/CategoryTabs";
+import Loading from "@/components/Loading";
+import { WithHeaderEffect } from "@/layouts/BaseLayout/BaseLayout";
+import { SwapRightOutlined } from "@ant-design/icons";
 import StoreCard from "@components/StoreCard";
 import { Button } from "antd";
-import { Link, useLoaderData } from "react-router";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { Await, Link, useLoaderData } from "react-router";
 import type { Route } from "./+types/index";
 
+// Promise.all 要放在 loader，因爲 revalidator.revalidate() 會無法做自動更新
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const categoryData = await getCategoryList(params.storeId);
-  const storeData = await getStore(params.storeId);
-  return { storeData, categoryData };
+  return {
+    dataPromise: Promise.all([
+      getStore(params.storeId),
+      getCategoryList(params.storeId),
+      getProductList(params.storeId),
+    ]),
+  };
 }
 
 function index() {
-  const { storeData, categoryData } = useLoaderData<typeof clientLoader>();
+  const { dataPromise } =
+    useLoaderData<typeof clientLoader>();
 
   return (
-    <div className="flex flex-col gap-y-8 h-full">
-      <h2 className="text-gray-800 text-2xl font-medium">店家管理</h2>
-
-      <div className="flex-1 flex gap-x-8 w-full h-full">
-        <div className="flex flex-col justify-between items-start">
-          <StoreCard store={storeData} />
+    <WithHeaderEffect mode="none">
+      <div className="flex flex-col gap-y-8 h-full">
+        <div className="flex items-center justify-between">
+          <h2 className="text-gray-800 text-2xl font-medium">店家管理</h2>
           <Link to="/stores">
             <Button color="default" variant="text" className="text-gray-500!">
-              <SwapLeftOutlined />
               返回店家列表
+              <SwapRightOutlined />
             </Button>
           </Link>
         </div>
 
-        <div className="flex-1 flex flex-col min-w-0">
-          {/* 類別 */}
-          <Category storeId={storeData._id} categoryData={categoryData} />
+        <div className="flex-1 flex flex-col lg:flex-row gap-x-8 w-full h-full gap-y-8">
+          {/* 店家 */}
 
-          {/* 商品 */}
-          <div></div>
+          <ErrorBoundary
+            fallbackRender={({ error }) => <p>⚠️ {error.message} </p>}
+          >
+            <Await resolve={dataPromise}>
+              {([storeData, categoryListData, productListData]) => (
+                <div>
+                  <StoreCard store={storeData} hasAction={false} />
+                </div>
+              )}
+            </Await>
+          </ErrorBoundary>
+
+          <ErrorBoundary
+            fallbackRender={({ error }) => <p>⚠️ {error.message} </p>}
+          >
+            <Suspense fallback={<Loading />}>
+              <Await
+                resolve={dataPromise}
+              >
+                {([storeData, categoryListData, productListData]) => {
+                  return (
+                    <div className="flex-1 flex flex-col min-w-0">
+                      <CategoryTabs storeId={storeData._id} categoryListData={categoryListData} />
+                    </div>
+                  );
+                }}
+              </Await>
+            </Suspense>
+          </ErrorBoundary>
         </div>
       </div>
-    </div>
+    </WithHeaderEffect>
   );
 }
 

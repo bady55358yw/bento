@@ -1,14 +1,9 @@
-import {
-  type RouteConfig,
-  index,
-  route,
-  layout,
-} from "@react-router/dev/routes";
+import { type RouteConfig, layout, route,index } from "@react-router/dev/routes";
 
 export default [
-  //   index("routes/home.tsx"),
+  index("./routes/home.tsx"),
 
-  layout("./layouts/BaseLayout.tsx", [
+  layout("./layouts/BaseLayout/BaseLayout.tsx", [
     route("login", "./routes/auth/login.tsx"),
     route("stores", "./routes/stores/index.tsx"), // 店家列表
     route("stores/new/step-1", "./routes/stores/new/step1.tsx"), // 新增店家-步驟一

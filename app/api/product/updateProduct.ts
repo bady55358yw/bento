@@ -1,30 +1,34 @@
 import { API_BASE_URL } from "@/api/config";
 
-export type UpdateCategoryPayload = {
-  title: string;
+export type UpdateProductPayload = {
+  categoryId: string;
+  name: string;
+  price: number;
+  notes: string;
+  isVegetarian: boolean;
 };
 
-export const updateCategory = async (
+export const updateProduct = async (
   storeId: string,
-  categoryId: string,
-  payload: UpdateCategoryPayload
+  id: string,
+  productData: UpdateProductPayload
 ) => {
   try {
     const res = await fetch(
-      `${API_BASE_URL}/stores/${storeId}/product-categories/${categoryId}`,
+      `${API_BASE_URL}/stores/${storeId}/products/${id}`,
       {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(productData),
       }
     );
 
     if (!res.ok) {
       const errorText = await res.json();
       console.error(errorText);
-      alert(`修改類別失敗：${errorText.message}`);
+      alert(`修改商品失敗：${errorText.message}`);
 
       return false;
     }
@@ -32,7 +36,7 @@ export const updateCategory = async (
     return true;
   } catch (err) {
     console.error(err);
-    alert("修改類別失敗，請聯絡管理員");
+    alert("修改商品失敗，請聯絡管理員");
 
     return false;
   }

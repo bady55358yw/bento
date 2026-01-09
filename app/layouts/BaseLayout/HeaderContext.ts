@@ -1,11 +1,11 @@
 import { createContext } from "react";
 
+export type HeaderMode = "full" | "withoutLogin" | "none";
+
 type HeaderContextType = {
-  headerMode: string;
-  setHeaderMode: (mode: "full" | "withoutLogin" | "none") => void;
+  setHeaderMode: (mode: HeaderMode) => void;
 };
 
 export const HeaderContext = createContext<HeaderContextType>({
-  headerMode: "full",
   setHeaderMode: () => {},
 });
