@@ -1,87 +1,115 @@
-# Welcome to React Router!
+# Bento - 團購訂餐工具
 
-A modern, production-ready template for building full-stack React applications using React Router.
+一個提供店家、商品與訂單管理的團購訂餐工具，適合公司內部協作使用。
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+## 功能重點
 
-## Features
+- **店家管理**：建立、編輯、刪除店家資訊（名稱、地址、營業時間、外送資訊等）
+- **商品分類**：為店家建立商品分類，支援新增、編輯、刪除分類
+- **商品管理**：管理每個分類下的商品（名稱、價格、備註、素食標記等）
+- **批次刪除**：支援刪除店家、分類及商品
+- **實時更新**：操作後立即反映在UI上，無需手動刷新
+- **響應式設計**：支援多設備瀏覽
+- **表單驗證**：確保用戶輸入的資料完整有效
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+## 使用技術
 
-## Getting Started
+**前端框架**
+- React 19：現代化的UI框架
+- React Router 7：全棧路由解決方案，支援loader及action
 
-### Installation
+**狀態管理與資料**
+- Zustand：輕量級狀態管理
+- React Hook Form：高效的表單管理
+- Zod：TypeScript優先的schema驗證
 
-Install the dependencies:
+**UI 組件與樣式**
+- Ant Design 6：企業級UI組件庫
+- TailwindCSS 4：utility-first CSS框架
+- clsx：條件式class名稱組合
+
+**開發工具**
+- TypeScript 5：強型別支援
+- Vite 7：高速前端構建工具
+- Tailwind Vite Plugin：TailwindCSS Vite整合
+- SVG React Plugin：SVG作為React組件使用
+
+**其他**
+- Error Boundary：錯誤邊界處理
+
+## 安裝與啟動
+
+### 環境要求
+- Node.js 18+
+
+### 安裝依賴
 
 ```bash
 npm install
 ```
 
-### Development
-
-Start the development server with HMR:
+### 開發模式
 
 ```bash
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+應用將在 `http://localhost:5173` 啟動。
 
-## Building for Production
-
-Create a production build:
+### 建立生產版本
 
 ```bash
 npm run build
 ```
 
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
+### 啟動生產伺服器
 
 ```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
+npm run start
 ```
 
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
+## 專案結構
 
 ```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
+bento/
+├── app/
+│   ├── api/                    # API 調用層
+│   │   ├── config.ts           # API 配置
+│   │   ├── reset.ts            # 重置接口
+│   │   ├── category/           # 分類相關API
+│   │   ├── product/            # 商品相關API
+│   │   └── stores/             # 店家相關API
+│   │
+│   ├── components/             # 可複用組件
+│   │   ├── CategoryTabs.tsx     # 分類標籤組件
+│   │   ├── Loading.tsx          # 載入狀態組件
+│   │   ├── StoreCard.tsx        # 店家卡片組件
+│   │   └── Products/            # 商品相關組件
+│   │
+│   ├── layouts/                # 版面配置
+│   │   └── BaseLayout/          # 基礎版面
+│   │
+│   ├── routes/                 # 路由頁面
+│   │   ├── home.tsx            # 首頁
+│   │   ├── auth/                # 認證相關
+│   │   └── stores/              # 店家管理頁面
+│   │       ├── index.tsx        # 店家列表
+│   │       ├── edit.tsx         # 編輯店家
+│   │       ├── [storeId]/       # 店家詳情
+│   │       └── new/             # 新增店家流程
+│   │
+│   ├── store/                  # 全域狀態管理
+│   │
+│   ├── assets/                 # 靜態資源
+│   ├── app.css                 # 全域樣式
+│   ├── root.tsx                # 根組件
+│   └── routes.ts               # 路由配置
+│
+├── public/                     # 公開資源
+├── package.json                # 依賴配置
+├── tsconfig.json               # TypeScript配置
+├── vite.config.ts              # Vite配置
+├── react-router.config.ts      # React Router配置
+└── Dockerfile                  # Docker配置
+
 ```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
