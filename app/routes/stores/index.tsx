@@ -2,7 +2,6 @@ import { reset } from "@/api/reset";
 import type { Store } from "@/api/stores/getStore";
 import { getStoreList, type StoreListRes } from "@/api/stores/getStoreList";
 import Loading from "@/components/Loading";
-import { WithHeaderEffect } from "@/layouts/BaseLayout/BaseLayout";
 import { ClearOutlined, PlusOutlined } from "@ant-design/icons";
 import StoreCard from "@components/StoreCard";
 import { Button, Spin } from "antd";
@@ -28,31 +27,29 @@ function stores() {
   };
 
   return (
-    <WithHeaderEffect mode="full">
-      <div className="space-y-8 ">
-        <div className="flex items-center justify-between">
-          <h2 className="text-gray-800 text-2xl font-medium">店家列表</h2>
+    <div className="space-y-8 ">
+      <div className="flex items-center justify-between">
+        <h2 className="text-gray-800 text-2xl font-medium">店家列表</h2>
 
-          {import.meta.env.DEV && (
-            <Button
-              onClick={handleSeed}
-              color="danger"
-              variant="text"
-              size="small"
-            >
-              <ClearOutlined />
-              重置
-            </Button>
-          )}
-        </div>
-
-        <Suspense fallback={<Loading />}>
-          <Await resolve={storeListPromise}>
-            {(storeListRes) => <StoreList storeListRes={storeListRes} />}
-          </Await>
-        </Suspense>
+        {import.meta.env.DEV && (
+          <Button
+            onClick={handleSeed}
+            color="danger"
+            variant="text"
+            size="small"
+          >
+            <ClearOutlined />
+            重置
+          </Button>
+        )}
       </div>
-    </WithHeaderEffect>
+
+      <Suspense fallback={<Loading />}>
+        <Await resolve={storeListPromise}>
+          {(storeListRes) => <StoreList storeListRes={storeListRes} />}
+        </Await>
+      </Suspense>
+    </div>
   );
 }
 
@@ -63,7 +60,7 @@ state 的預設值就可以直接放 storeListRes */
 function StoreList({ storeListRes }: { storeListRes: StoreListRes }) {
   const [stores, setStores] = useState<Store[]>(storeListRes.page);
   const [continueCursor, setContinueCursor] = useState<string>(
-    storeListRes.continueCursor
+    storeListRes.continueCursor,
   );
   const [isDone, setIsDone] = useState<boolean>(storeListRes.isDone);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
@@ -87,7 +84,7 @@ function StoreList({ storeListRes }: { storeListRes: StoreListRes }) {
       },
       {
         rootMargin: "200px", // 提前撈
-      }
+      },
     );
 
     observer.observe(loadMoreRef.current);

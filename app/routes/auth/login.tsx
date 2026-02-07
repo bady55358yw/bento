@@ -1,4 +1,3 @@
-import { WithHeaderEffect } from "@/layouts/BaseLayout/BaseLayout";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Form, Input } from "antd";
 import { Controller, useForm } from "react-hook-form";
@@ -29,51 +28,49 @@ function login() {
   };
 
   return (
-    <WithHeaderEffect mode="withoutLogin">
-      <div className="flex flex-col items-center justify-center gap-y-8 h-full">
-        <h1 className="text-3xl text-gray-800 font-medium">超級帳號</h1>
+    <div className="flex flex-col items-center justify-center gap-y-8 h-full">
+      <h1 className="text-3xl text-gray-800 font-medium">超級帳號</h1>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col items-center w-full max-w-[280px]"
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col items-center w-full max-w-[280px]"
+      >
+        <Form.Item
+          label="帳號"
+          validateStatus={errors.account ? "error" : undefined}
+          help={errors.account?.message}
+          layout="vertical"
+          className="w-full "
         >
-          <Form.Item
-            label="帳號"
-            validateStatus={errors.account ? "error" : undefined}
-            help={errors.account?.message}
-            layout="vertical"
-            className="w-full "
-          >
-            <Controller
-              name="account"
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { ...field } }) => (
-                <Input {...field} size="large" />
-              )}
-            />
-          </Form.Item>
-          <Form.Item
-            label="密碼"
-            validateStatus={errors.password ? "error" : undefined}
-            help={errors.password?.message}
-            layout="vertical"
-            className="w-full"
-          >
-            <Controller
-              name="password"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => <Input {...field} size="large" />}
-            />
-          </Form.Item>
+          <Controller
+            name="account"
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { ...field } }) => (
+              <Input {...field} size="large" />
+            )}
+          />
+        </Form.Item>
+        <Form.Item
+          label="密碼"
+          validateStatus={errors.password ? "error" : undefined}
+          help={errors.password?.message}
+          layout="vertical"
+          className="w-full"
+        >
+          <Controller
+            name="password"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => <Input {...field} size="large" />}
+          />
+        </Form.Item>
 
-          <Button htmlType="submit" color="primary" variant="solid">
-            登入
-          </Button>
-        </form>
-      </div>
-    </WithHeaderEffect>
+        <Button htmlType="submit" color="primary" variant="solid">
+          登入
+        </Button>
+      </form>
+    </div>
   );
 }
 

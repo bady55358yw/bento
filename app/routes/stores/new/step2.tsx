@@ -1,4 +1,3 @@
-import { WithHeaderEffect } from "@/layouts/BaseLayout/BaseLayout";
 import { useStoreForm } from "@/store/useStoreForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Checkbox, Form, Input } from "antd";
@@ -47,100 +46,98 @@ function step2() {
   };
 
   return (
-    <WithHeaderEffect mode="none">
-      <div className="flex flex-col items-center w-full h-full gap-4">
-        <h1 className="text-3xl text-colorText my-6">Step 2｜店家資料</h1>
+    <div className="flex flex-col items-center w-full h-full gap-4">
+      <h1 className="text-3xl text-colorText my-6">Step 2｜店家資料</h1>
 
-        <form
-          onSubmit={handleSubmit(submitForm)}
-          className="flex flex-col items-center justify-between w-full h-full gap-6"
-        >
-          <div className="flex flex-col gap-y-8 w-full max-w-[640px]">
-            <Form.Item label="店家描述" layout="vertical" className="w-full">
+      <form
+        onSubmit={handleSubmit(submitForm)}
+        className="flex flex-col items-center justify-between w-full h-full gap-6"
+      >
+        <div className="flex flex-col gap-y-8 w-full max-w-[640px]">
+          <Form.Item label="店家描述" layout="vertical" className="w-full">
+            <Controller
+              name="description"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <TextArea {...field} rows={4} maxLength={120} showCount />
+              )}
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="外送服務"
+            layout="vertical"
+            validateStatus={errors.deliveryMinimum ? "error" : ""}
+            help={errors.deliveryMinimum?.message}
+          >
+            <div className="flex items-center text-colorTextSecondary">
               <Controller
-                name="description"
+                name="deliveryAvailable"
                 control={control}
                 rules={{ required: true }}
                 render={({ field }) => (
-                  <TextArea {...field} rows={4} maxLength={120} showCount />
+                  <Checkbox
+                    checked={field.value}
+                    onChange={(e) => field.onChange(e.target.checked)}
+                    className="checkbox-lg"
+                  >
+                    是，外送低消
+                  </Checkbox>
                 )}
               />
-            </Form.Item>
 
-            <Form.Item
-              label="外送服務"
-              layout="vertical"
-              validateStatus={errors.deliveryMinimum ? "error" : ""}
-              help={errors.deliveryMinimum?.message}
-            >
-              <div className="flex items-center text-colorTextSecondary">
-                <Controller
-                  name="deliveryAvailable"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => (
-                    <Checkbox
-                      checked={field.value}
-                      onChange={(e) => field.onChange(e.target.checked)}
-                      className="checkbox-lg"
-                    >
-                      是，外送低消
-                    </Checkbox>
-                  )}
-                />
+              <Controller
+                name="deliveryMinimum"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Input
+                    {...field}
+                    size="large"
+                    className="flex-1 max-w-28! mr-2!"
+                  />
+                )}
+              />
+            </div>
+          </Form.Item>
+        </div>
 
-                <Controller
-                  name="deliveryMinimum"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      size="large"
-                      className="flex-1 max-w-28! mr-2!"
-                    />
-                  )}
-                />
-              </div>
-            </Form.Item>
-          </div>
-
-          <div className="flex flex-col items-center">
-            <div className="flex items-center justify-center gap-x-8 w-full">
-              <Link to="/stores/new/step-1">
-                <Button size="large" color="primary" variant="outlined">
-                  上一步
-                </Button>
-              </Link>
-
-              <div className="flex gap-x-2">
-                <span className="block w-16 h-1 bg-colorBgSpotlight"></span>
-                <span className="block w-16 h-1 bg-colorBgSpotlight"></span>
-                <span className="block w-16 h-1 bg-colorFill"></span>
-              </div>
-
-              <Button
-                htmlType="submit"
-                size="large"
-                color="primary"
-                variant="solid"
-              >
-                下一步
+        <div className="flex flex-col items-center">
+          <div className="flex items-center justify-center gap-x-8 w-full">
+            <Link to="/stores/new/step-1">
+              <Button size="large" color="primary" variant="outlined">
+                上一步
               </Button>
+            </Link>
+
+            <div className="flex gap-x-2">
+              <span className="block w-16 h-1 bg-colorBgSpotlight"></span>
+              <span className="block w-16 h-1 bg-colorBgSpotlight"></span>
+              <span className="block w-16 h-1 bg-colorFill"></span>
             </div>
 
-            <div>
-              <Link to="/stores">
-                <Button size="large" color="primary" variant="link">
-                  取消?
-                </Button>
-              </Link>
-              <span className="text-colorTextTertiary">回店家列表</span>
-            </div>
+            <Button
+              htmlType="submit"
+              size="large"
+              color="primary"
+              variant="solid"
+            >
+              下一步
+            </Button>
           </div>
-        </form>
-      </div>
-    </WithHeaderEffect>
+
+          <div>
+            <Link to="/stores">
+              <Button size="large" color="primary" variant="link">
+                取消?
+              </Button>
+            </Link>
+            <span className="text-colorTextTertiary">回店家列表</span>
+          </div>
+        </div>
+      </form>
+    </div>
   );
 }
 
