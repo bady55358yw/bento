@@ -99,8 +99,10 @@ bento/
 │   │       ├── edit.tsx         # 編輯店家
 │   │       ├── [storeId]/       # 店家詳情
 │   │       └── new/             # 新增店家流程
-│   │
-│   ├── store/                  # 全域狀態管理
+│   │           ├── newContainer.tsx  # 新增店家容器
+│   │           ├── step1.tsx         # 步驟一
+│   │           ├── step2.tsx         # 步驟二
+│   │           └── step3.tsx         # 步驟三：確認與提交
 │   │
 │   ├── assets/                 # 靜態資源
 │   ├── app.css                 # 全域樣式

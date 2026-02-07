@@ -1,8 +1,8 @@
-import { useStoreForm } from "@/store/useStoreForm";
+import type { StoreNewContextType } from "@/routes/stores/new/newContainer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Checkbox, Form, Input } from "antd";
 import { Controller, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useOutletContext } from "react-router";
 import * as z from "zod";
 const { TextArea } = Input;
 
@@ -29,7 +29,7 @@ type Step2Inputs = z.infer<typeof step2Schema>;
 
 function step2() {
   let navigate = useNavigate();
-  const { step2Data, setStep2 } = useStoreForm();
+  const [formData, setFormData] = useOutletContext<StoreNewContextType>();
 
   const {
     control,
@@ -37,11 +37,11 @@ function step2() {
     formState: { errors },
   } = useForm<Step2Inputs>({
     resolver: zodResolver(step2Schema),
-    defaultValues: step2Data, // 使用 store 的 step2Data 初始值
+    defaultValues: formData.step2, // 使用 store 的 step2Data 初始值
   });
 
   const submitForm = (data: Step2Inputs) => {
-    setStep2(data); // 儲存 step2 資料到 store
+    setFormData((prev) => ({ ...prev, step2: data })); // 將步驟二資料存到父組件 newContainer
     navigate("/stores/new/step-3");
   };
 
