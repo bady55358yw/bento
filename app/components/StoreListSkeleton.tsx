@@ -3,9 +3,6 @@ import type { SkeletonProps } from "antd";
 import { Skeleton } from "antd";
 
 const skeletonstyles: SkeletonProps["styles"] = {
-  root: {
-    border: "1px solid rgba(229, 243, 254, 0.3)",
-  },
   title: {
     backgroundColor: "rgba(229, 243, 254, 0.5)",
     height: 20,
@@ -27,9 +24,8 @@ function StoreListSkeleton() {
 
 function StoreCardSkeleton() {
   return (
-    <div className="flex flex-col w-full lg:h-[280px] bg-white border border-colorBorder rounded-2xl p-4 gap-y-3">
+    <div className="flex flex-col w-full h-[280px] bg-white border border-colorBorder rounded-2xl p-4 gap-y-3">
       <Skeleton
-        classNames="[&_.ant-skeleton-paragraph>li]:bg-[rgba(229,243,254,0.5)]"
         styles={skeletonstyles}
         active
       />
