@@ -1,37 +1,35 @@
-import type { StoreNewContextType } from "@/routes/stores/new/newContainer";
+import {
+  step1Schema,
+  type Step1Values,
+  type StoreNewContextType,
+} from "@/routes/stores/new/newContainer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Form, Input } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate, useOutletContext } from "react-router";
-import * as z from "zod";
 const { TextArea } = Input;
 
-const step1Schema = z.object({
-  name: z.string().min(1, "請輸入店名"),
-  phone: z
-    .string()
-    .min(1, "請輸入電話號碼")
-    .regex(/^09\d{8}$/, "請輸入以 09 開頭的 10 碼電話號碼"),
-  address: z.string(),
-});
-
-type Step1Inputs = z.infer<typeof step1Schema>;
+const step1InitialValues: Step1Values = {
+  name: "",
+  phone: "",
+  address: "",
+};
 
 function step1() {
   let navigate = useNavigate();
-  const [formData, setFormData] = useOutletContext<StoreNewContextType>();
+  const { step1, setStep1 } = useOutletContext<StoreNewContextType>();
 
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<Step1Inputs>({
+  } = useForm({
     resolver: zodResolver(step1Schema),
-    defaultValues: formData.step1,
+    defaultValues: step1 ?? step1InitialValues,
   });
 
-  const submitForm = (data: Step1Inputs) => {
-    setFormData((prev)=>({...prev, step1:data})); // 將步驟一資料存到父組件 newContainer
+  const submitForm = (data: Step1Values) => {
+    setStep1(data); // 將步驟一資料存到父組件 newContainer
     navigate("/stores/new/step-2");
   };
 

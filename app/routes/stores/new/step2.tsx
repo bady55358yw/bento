@@ -1,47 +1,38 @@
-import type { StoreNewContextType } from "@/routes/stores/new/newContainer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Checkbox, Form, Input } from "antd";
 import { Controller, useForm } from "react-hook-form";
-import { Link, useNavigate, useOutletContext } from "react-router";
-import * as z from "zod";
+import { Link, Navigate, useNavigate, useOutletContext } from "react-router";
+import {
+  step2Schema,
+  type Step2Values,
+  type StoreNewContextType,
+} from "./newContainer";
 const { TextArea } = Input;
 
-const step2Schema = z
-  .object({
-    description: z.string(),
-    deliveryAvailable: z.boolean(),
-    deliveryMinimum: z.string().optional(),
-  })
-  .superRefine((data, ctx) => {
-    if (
-      data.deliveryAvailable &&
-      (!data.deliveryMinimum || isNaN(Number(data.deliveryMinimum)))
-    ) {
-      ctx.addIssue({
-        code: "custom",
-        message: "外送低消請輸入數字",
-        path: ["deliveryMinimum"],
-      });
-    }
-  });
-
-type Step2Inputs = z.infer<typeof step2Schema>;
+const step2InitialValues: Step2Values = {
+  description: "",
+  deliveryAvailable: false,
+  deliveryMinimum: "",
+};
 
 function step2() {
   let navigate = useNavigate();
-  const [formData, setFormData] = useOutletContext<StoreNewContextType>();
+  const { step1, step2, setStep2 } = useOutletContext<StoreNewContextType>();
+
+  // 正常流程是不太可能發生，但使用者確實能直接用網址進入此頁面
+  if (!step1) return <Navigate to="/stores/new/step-1" />;
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<Step2Inputs>({
+  } = useForm({
     resolver: zodResolver(step2Schema),
-    defaultValues: formData.step2, // 使用 store 的 step2Data 初始值
+    defaultValues: step2 ?? step2InitialValues,
   });
 
-  const submitForm = (data: Step2Inputs) => {
-    setFormData((prev) => ({ ...prev, step2: data })); // 將步驟二資料存到父組件 newContainer
+  const submitForm = (data: Step2Values) => {
+    setStep2(data); // 將步驟二資料存到父組件 newContainer
     navigate("/stores/new/step-3");
   };
 

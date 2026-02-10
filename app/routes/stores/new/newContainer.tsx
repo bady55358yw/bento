@@ -1,55 +1,54 @@
 import { useState } from "react";
 import { Outlet } from "react-router";
+import * as z from "zod";
 
-type StoreFormData = {
-  step1: {
-    name: string;
-    phone: string;
-    address: string;
-  };
-  step2: {
-    description: string;
-    deliveryAvailable: boolean;
-    deliveryMinimum?: string | undefined;
-  };
+export const step1Schema = z.object({
+  name: z.string().min(1, "請輸入店名"),
+  phone: z
+    .string()
+    .min(1, "請輸入電話號碼")
+    .regex(/^09\d{8}$/, "請輸入以 09 開頭的 10 碼電話號碼"),
+  address: z.string(),
+});
+export type Step1Values = z.input<typeof step1Schema>;
+
+export const step2Schema = z
+  .object({
+    description: z.string(),
+    deliveryAvailable: z.boolean(),
+    deliveryMinimum: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (
+      data.deliveryAvailable &&
+      (!data.deliveryMinimum || isNaN(Number(data.deliveryMinimum)))
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        message: "外送低消請輸入數字",
+        path: ["deliveryMinimum"],
+      });
+    }
+  });
+export type Step2Values = z.infer<typeof step2Schema>;
+
+
+export type StoreNewContextType = {
+  // 狀態分開來，在使用時會比較容易分辨
+  // 用 null 來表示使用者尚未輸入資料
+  step1: Step1Values | null;
+  step2: Step2Values | null;
+  // setter 不允許 null，不存在這種情境
+  setStep1: (value: Step1Values) => void;
+  setStep2: (value: Step2Values) => void;
+  // 不需要 reset，因為離開這個流程的時候 newContainer 會被 unmount，狀態就已經被清空了
 };
 
-export type StoreNewContextType = [
-  StoreFormData, // 步驟一和步驟二資料
-  (value: StoreFormData | ((prev: StoreFormData) => StoreFormData)) => void, // 更新步驟一和步驟二資料
-  () => void, // 清空步驟一和步驟二資料
-];
-
 function newContainer() {
-  // formData 用來儲存步驟一和步驟二的資料，以便回一步時不會清掉步驟一和步驟二的資料
-  const [formData, setFormData] = useState<StoreFormData>({
-    step1: {
-      name: "",
-      phone: "",
-      address: "",
-    },
-    step2: {
-      description: "",
-      deliveryAvailable: false,
-      deliveryMinimum: "",
-    },
-  });
+  const [step1, setStep1] = useState<Step1Values | null>(null);
+  const [step2, setStep2] = useState<Step2Values | null>(null);
 
-  const handleReset = () => {
-    setFormData({
-      step1: {
-        name: "",
-        phone: "",
-        address: "",
-      },
-      step2: {
-        description: "",
-        deliveryAvailable: false,
-        deliveryMinimum: "",
-      },
-    });
-  };
-  return <Outlet context={[formData, setFormData, handleReset]} />;
+  return <Outlet context={{ step1, step2, setStep1, setStep2 }} />;
 }
 
 export default newContainer;
