@@ -41,15 +41,15 @@ function step3() {
             <div className="flex-1 space-y-8 text-colorTextSecondary">
               <div className="flex items-baseline ">
                 <p className="w-24">店名</p>
-                <p className="flex-1">{step1?.name ?? ""}</p>
+                <p className="flex-1">{step1.name}</p>
               </div>
               <div className="flex items-baseline">
                 <p className="w-24">電話</p>
-                <p className="flex-1">{step1?.phone ?? ""}</p>
+                <p className="flex-1">{step1.phone}</p>
               </div>
               <div className="flex items-baseline">
                 <p className="w-24">地址</p>
-                <p className="flex-1">{step1?.address ?? ""}</p>
+                <p className="flex-1">{step1.address}</p>
               </div>
             </div>
           </div>
@@ -64,13 +64,13 @@ function step3() {
             <div className="flex-1 space-y-8 text-colorTextSecondary">
               <div className="flex items-baseline ">
                 <p className="w-24">店家描述</p>
-                <p className="flex-1">{step2?.description ?? ""}</p>
+                <p className="flex-1">{step2.description}</p>
               </div>
               <div className="flex items-baseline">
                 <p className="w-24">外送服務</p>
                 <p className="flex-1">
-                  {step2?.deliveryAvailable
-                    ? `是 / 外送低消 ${step2.deliveryMinimum ?? ""}`
+                  {step2.deliveryAvailable
+                    ? `是 / 外送低消 ${step2.deliveryMinimum}`
                     : "否"}
                 </p>
               </div>
