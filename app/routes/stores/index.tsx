@@ -1,13 +1,14 @@
 import { reset } from "@/api/reset";
 import type { Store } from "@/api/stores/getStore";
 import { getStoreList, type StoreListRes } from "@/api/stores/getStoreList";
-import Loading from "@/components/Loading";
+import AddStoreButton from "@/components/AddStoreButton";
+import StoreListSkeleton from "@/components/StoreListSkeleton";
 import { WithHeaderEffect } from "@/layouts/BaseLayout/BaseLayout";
-import { ClearOutlined, PlusOutlined } from "@ant-design/icons";
+import { ClearOutlined } from "@ant-design/icons";
 import StoreCard from "@components/StoreCard";
 import { Button, Spin } from "antd";
 import { Suspense, useEffect, useRef, useState } from "react";
-import { Await, Link, useLoaderData, useRevalidator } from "react-router";
+import { Await, useLoaderData, useRevalidator } from "react-router";
 
 export async function clientLoader() {
   const storeListPromise = getStoreList();
@@ -46,7 +47,14 @@ function stores() {
           )}
         </div>
 
-        <Suspense fallback={<Loading />}>
+        {/* 店家列表 */}
+        <Suspense
+          fallback={
+            <>
+              <StoreListSkeleton />
+            </>
+          }
+        >
           <Await resolve={storeListPromise}>
             {(storeListRes) => <StoreList storeListRes={storeListRes} />}
           </Await>
@@ -56,6 +64,8 @@ function stores() {
   );
 }
 
+
+
 /* 因為 storeListPromise 要在 Await 後才可以拿到 storeListRes，
 而 react 不可以在渲染中(即 return) 時再去執行上面的 js(即 setState)，
 所以多建個 react component，將 storeListRes 傳給子 component，
@@ -63,7 +73,7 @@ state 的預設值就可以直接放 storeListRes */
 function StoreList({ storeListRes }: { storeListRes: StoreListRes }) {
   const [stores, setStores] = useState<Store[]>(storeListRes.page);
   const [continueCursor, setContinueCursor] = useState<string>(
-    storeListRes.continueCursor
+    storeListRes.continueCursor,
   );
   const [isDone, setIsDone] = useState<boolean>(storeListRes.isDone);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
@@ -87,7 +97,7 @@ function StoreList({ storeListRes }: { storeListRes: StoreListRes }) {
       },
       {
         rootMargin: "200px", // 提前撈
-      }
+      },
     );
 
     observer.observe(loadMoreRef.current);
@@ -120,15 +130,8 @@ function StoreList({ storeListRes }: { storeListRes: StoreListRes }) {
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <Link to="/stores/new/step-1" className="flex flex-col">
-          <Button
-            type="dashed"
-            className="h-[276px]! rounded-2xl! text-colorTextTertiary! hover:text-colorPrimaryHover!"
-          >
-            <PlusOutlined className="flex! items-center! justify-center! text-2xl" />
-          </Button>
-        </Link>
-
+        <AddStoreButton />
+        
         {stores.map((store) => (
           <StoreCard key={store._id} store={store} />
         ))}
