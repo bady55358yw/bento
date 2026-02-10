@@ -1,25 +1,28 @@
-import { createStore } from "@/api/stores/createStore";
+import { createStore, type CreateStorePayload } from "@/api/stores/createStore";
 import type { StoreNewContextType } from "@/routes/stores/new/newContainer";
 import { Button } from "antd";
-import { Link, useNavigate, useOutletContext } from "react-router";
+import { Link, Navigate, useNavigate, useOutletContext } from "react-router";
 
 function step3() {
   let navigate = useNavigate();
-  const [formData, setFormData, handleReset] = useOutletContext<StoreNewContextType>();
+  const { step1, step2 } = useOutletContext<StoreNewContextType>();
+
+  // 正常流程是不太可能發生，但使用者確實能直接用網址進入此頁面
+  if (!step1) return <Navigate to="/stores/new/step-1" />;
+  if (!step2) return <Navigate to="/stores/new/step-2" />;
 
   const submitForm = async () => {
     // 組合要給後端的資料
-    const payload = {
-      ...formData.step1,
-      ...formData.step2,
-      deliveryMinimum: Number(formData.step2.deliveryMinimum) || 0,
+    const payload: CreateStorePayload = {
+      ...step1,
+      ...step2,
+      deliveryMinimum: Number(step2.deliveryMinimum) || 0,
       deliveryFee: 0,
     };
 
     const data = await createStore(payload);
 
     if (data) {
-      handleReset(); // 清空所有表單資料
       navigate("/stores");
     }
   };
@@ -38,15 +41,15 @@ function step3() {
             <div className="flex-1 space-y-8 text-colorTextSecondary">
               <div className="flex items-baseline ">
                 <p className="w-24">店名</p>
-                <p className="flex-1">{formData.step1.name}</p>
+                <p className="flex-1">{step1?.name ?? ""}</p>
               </div>
               <div className="flex items-baseline">
                 <p className="w-24">電話</p>
-                <p className="flex-1">{formData.step1.phone}</p>
+                <p className="flex-1">{step1?.phone ?? ""}</p>
               </div>
               <div className="flex items-baseline">
                 <p className="w-24">地址</p>
-                <p className="flex-1">{formData.step1.address}</p>
+                <p className="flex-1">{step1?.address ?? ""}</p>
               </div>
             </div>
           </div>
@@ -61,13 +64,13 @@ function step3() {
             <div className="flex-1 space-y-8 text-colorTextSecondary">
               <div className="flex items-baseline ">
                 <p className="w-24">店家描述</p>
-                <p className="flex-1">{formData.step2.description}</p>
+                <p className="flex-1">{step2?.description ?? ""}</p>
               </div>
               <div className="flex items-baseline">
                 <p className="w-24">外送服務</p>
                 <p className="flex-1">
-                  {formData.step2.deliveryAvailable
-                    ? `是 / 外送低消 ${formData.step2.deliveryMinimum}`
+                  {step2?.deliveryAvailable
+                    ? `是 / 外送低消 ${step2.deliveryMinimum ?? ""}`
                     : "否"}
                 </p>
               </div>
