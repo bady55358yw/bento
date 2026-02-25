@@ -87,7 +87,9 @@ bento/
 │   │   └── Products/            # 商品相關組件
 │   │
 │   ├── layouts/                # 版面配置
-│   │   └── BaseLayout/          # 基礎版面
+│   │   ├── MainLayout.tsx       # 主要版面（顯示Header + 登出按鈕）
+│   │   ├── SimpleLayout.tsx     # 簡單版面（只有Logo）
+│   │   └── EmptyLayout.tsx      # 空版面（隱藏Header）
 │   │
 │   ├── routes/                 # 路由頁面
 │   │   ├── home.tsx            # 首頁
@@ -97,8 +99,10 @@ bento/
 │   │       ├── edit.tsx         # 編輯店家
 │   │       ├── [storeId]/       # 店家詳情
 │   │       └── new/             # 新增店家流程
-│   │
-│   ├── store/                  # 全域狀態管理
+│   │           ├── newContainer.tsx  # 新增店家容器
+│   │           ├── step1.tsx         # 步驟一
+│   │           ├── step2.tsx         # 步驟二
+│   │           └── step3.tsx         # 步驟三：確認與提交
 │   │
 │   ├── assets/                 # 靜態資源
 │   ├── app.css                 # 全域樣式

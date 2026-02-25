@@ -2,9 +2,8 @@ import { reset } from "@/api/reset";
 import type { Store } from "@/api/stores/getStore";
 import { getStoreList, type StoreListRes } from "@/api/stores/getStoreList";
 import AddStoreButton from "@/components/AddStoreButton";
-import StoreListSkeleton from "@/components/StoreListSkeleton";
-import { WithHeaderEffect } from "@/layouts/BaseLayout/BaseLayout";
-import { ClearOutlined } from "@ant-design/icons";
+import Loading from "@/components/Loading";
+import { ClearOutlined, PlusOutlined } from "@ant-design/icons";
 import StoreCard from "@components/StoreCard";
 import { Button, Spin } from "antd";
 import { Suspense, useEffect, useRef, useState } from "react";
@@ -29,38 +28,29 @@ function stores() {
   };
 
   return (
-    <WithHeaderEffect mode="full">
-      <div className="space-y-8 ">
-        <div className="flex items-center justify-between">
-          <h2 className="text-gray-800 text-2xl font-medium">店家列表</h2>
+    <div className="space-y-8 ">
+      <div className="flex items-center justify-between">
+        <h2 className="text-gray-800 text-2xl font-medium">店家列表</h2>
 
-          {import.meta.env.DEV && (
-            <Button
-              onClick={handleSeed}
-              color="danger"
-              variant="text"
-              size="small"
-            >
-              <ClearOutlined />
-              重置
-            </Button>
-          )}
-        </div>
-
-        {/* 店家列表 */}
-        <Suspense
-          fallback={
-            <>
-              <StoreListSkeleton />
-            </>
-          }
-        >
-          <Await resolve={storeListPromise}>
-            {(storeListRes) => <StoreList storeListRes={storeListRes} />}
-          </Await>
-        </Suspense>
+        {import.meta.env.DEV && (
+          <Button
+            onClick={handleSeed}
+            color="danger"
+            variant="text"
+            size="small"
+          >
+            <ClearOutlined />
+            重置
+          </Button>
+        )}
       </div>
-    </WithHeaderEffect>
+
+      <Suspense fallback={<Loading />}>
+        <Await resolve={storeListPromise}>
+          {(storeListRes) => <StoreList storeListRes={storeListRes} />}
+        </Await>
+      </Suspense>
+    </div>
   );
 }
 
