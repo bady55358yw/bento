@@ -1,13 +1,27 @@
-import { step2Schema, type Step2Values, type StoreNewContextType } from "@/routes/stores/new/newContainer";
+import {
+  step2Schema,
+  type Step2Values,
+  type StoreNewContextType,
+} from "@/routes/stores/new/newContainer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Checkbox, Form, Input } from "antd";
 import { Controller, useForm } from "react-hook-form";
-import { Link, useNavigate, useOutletContext } from "react-router";
+import { Link, Navigate, useNavigate, useOutletContext } from "react-router";
 const { TextArea } = Input;
+
+const defaultStep2Data = {
+  description: "",
+  deliveryAvailable: false,
+  deliveryMinimum: "",
+};
 
 function step2() {
   let navigate = useNavigate();
-  const {step2Data, setStep2Data} = useOutletContext<StoreNewContextType>();
+  const { step1Data, step2Data, setStep2Data } =
+    useOutletContext<StoreNewContextType>();
+
+  // 防止不正常操作，不可以用 navigate，因為 navigate 是在 render 時做狀態更新，所以要改用 Navigate Component
+  if (!step1Data) return <Navigate to="/stores/new/step-1" />;
 
   const {
     control,
@@ -15,7 +29,7 @@ function step2() {
     formState: { errors },
   } = useForm<Step2Values>({
     resolver: zodResolver(step2Schema),
-    defaultValues: step2Data, // 使用 store 的 step2Data 初始值
+    defaultValues: step2Data ?? defaultStep2Data, // 使用 store 的 step2Data 初始值
   });
 
   const submitForm = (data: Step2Values) => {

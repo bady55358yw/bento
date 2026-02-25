@@ -1,13 +1,24 @@
-import { step1Schema, type Step1Values, type StoreNewContextType } from "@/routes/stores/new/newContainer";
+import {
+  step1Schema,
+  type Step1Values,
+  type StoreNewContextType,
+} from "@/routes/stores/new/newContainer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Form, Input } from "antd";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate, useOutletContext } from "react-router";
 const { TextArea } = Input;
 
+const defaultStep1Data = {
+  name: "",
+  phone: "",
+  address: "",
+};
+
 function step1() {
   let navigate = useNavigate();
-  const {step1Data, setStep1Data} = useOutletContext<StoreNewContextType>();
+  const { step1Data, setStep1Data } = useOutletContext<StoreNewContextType>();
+
 
   const {
     handleSubmit,
@@ -15,7 +26,7 @@ function step1() {
     formState: { errors },
   } = useForm<Step1Values>({
     resolver: zodResolver(step1Schema),
-    defaultValues: step1Data,
+    defaultValues: step1Data??defaultStep1Data,
   });
 
   const submitForm = (data: Step1Values) => {

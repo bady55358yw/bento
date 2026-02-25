@@ -34,24 +34,16 @@ export type Step1Values = z.infer<typeof step1Schema>;
 export type Step2Values = z.infer<typeof step2Schema>;
 
 export type StoreNewContextType = {
-  step1Data: Step1Values;
+  step1Data: Step1Values| null;
   setStep1Data: (value: Step1Values) => void;
-  step2Data: Step2Values;
+  step2Data: Step2Values| null;
   setStep2Data: (value: Step2Values) => void;
 };
 
 function newContainer() {
   // 用來儲存步驟一和步驟二的資料，以便回一步時不會清掉步驟一和步驟二的資料
-  const [step1Data, setStep1Data] = useState<Step1Values | null>({
-    name: "",
-    phone: "",
-    address: "",
-  });
-  const [step2Data, setStep2Data] = useState<Step2Values | null>({
-    description: "",
-    deliveryAvailable: false,
-    deliveryMinimum: "",
-  });
+  const [step1Data, setStep1Data] = useState<Step1Values | null>(null);
+  const [step2Data, setStep2Data] = useState<Step2Values | null>(null);
   return (
     <Outlet context={{ step1Data, setStep1Data, step2Data, setStep2Data }} />
   );

@@ -1,18 +1,22 @@
 import { createStore } from "@/api/stores/createStore";
 import type { StoreNewContextType } from "@/routes/stores/new/newContainer";
 import { Button } from "antd";
-import { Link, useNavigate, useOutletContext } from "react-router";
+import { Link, Navigate, useNavigate, useOutletContext } from "react-router";
 
 function step3() {
   let navigate = useNavigate();
   const { step1Data, step2Data } = useOutletContext<StoreNewContextType>();
+
+  // 防止不正常操作，不可以用 navigate，因為 navigate 是在 render 時做狀態更新，所以要改用 Navigate Component
+  if (!step1Data) return <Navigate to="/stores/new/step-1" />;
+  if (!step2Data) return <Navigate to="/stores/new/step-2" />;
 
   const submitForm = async () => {
     // 組合要給後端的資料
     const payload = {
       ...step1Data,
       ...step2Data,
-      deliveryMinimum: Number(step2Data.deliveryMinimum) || 0,
+      deliveryMinimum: Number(step2Data?.deliveryMinimum) || 0,
       deliveryFee: 0,
     };
 
